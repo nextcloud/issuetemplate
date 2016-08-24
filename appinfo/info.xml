@@ -9,7 +9,7 @@
     <namespace>IssueTemplate</namespace>
     <category>tool</category>
     <dependencies>
-        <owncloud min-version="" />
+        <owncloud min-version="9.1" />
     </dependencies>
     <settings>
         <admin-section>OCA\IssueTemplate\Settings\Section</admin-section>
