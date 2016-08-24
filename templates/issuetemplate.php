@@ -16,8 +16,8 @@
 
 **Updated from an older Nextcloud/ownCloud or fresh install:**
 
-
 **Where did you install Nextcloud from:** <?php p($_['installMethod']); ?>
+
 
 **Signing status:**
 <details>

@@ -1,3 +1,6 @@
-#hello {
-	color: red;
+#issue-description {
+	width: 100%; height:200px;
+}
+#issue-serverinfo {
+	width: 100%; height:300px;
 }
