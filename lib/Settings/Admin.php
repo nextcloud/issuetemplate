@@ -28,7 +28,9 @@ use OCP\IConfig;
 use OCP\IL10N;
 use OCP\IURLGenerator;
 use OCP\Settings\ISettings;
-
+use OC\IntegrityCheck\Checker;
+use OCP\App\IAppManager;
+use OC\SystemConfig;
 class Admin implements ISettings {
 	/** @var IConfig */
 	private $config;
@@ -36,27 +38,38 @@ class Admin implements ISettings {
 	private $l;
 	/** @var IURLGenerator */
 	private $urlGenerator;
+	/** @var Checker */
+	private $checker;
+	/** @var IAppManager */
+	private $appManager;
+	/** @var SystemConfig */
+	private $systemConfig;
 
-	public function __construct(IConfig $config,
+	public function __construct(
+								IConfig $config,
 								IL10N $l,
-								IURLGenerator $urlGenerator) {
+								IURLGenerator $urlGenerator,
+								Checker $checker,
+								IAppManager $appManager) {
 		$this->config = $config;
 		$this->l = $l;
 		$this->urlGenerator = $urlGenerator;
+		$this->checker = $checker;
+		$this->appManager = $appManager;
+		$this->systemConfig = \OC::$server->query("SystemConfig");
 	}
-	
-	/**
-	 * @return TemplateResponse
-	 */
+
 	public function getForm() {
 		$data = array(
 			'version' => $this->config->getSystemValue('version'),
 			'os' => php_uname(),
 			'php' => PHP_VERSION,
 			'dbserver' => $this->config->getSystemValue('dbtype'),
-			'webserver' => $_SERVER['software']
-
-
+			'webserver' => $_SERVER['software'] . " " . php_sapi_name(),
+			'installMethod' => $this->getInstallMethod(),
+			'integrity' => $this->checker->verifyCoreSignature(),
+			'apps' => $this->getAppList(),
+			'config' => $this->getConfig(),
 		);
 
 		$issueTemplate = new TemplateResponse('issuetemplate', 'issuetemplate', $data, '');
@@ -67,22 +80,60 @@ class Admin implements ISettings {
 		return new TemplateResponse('issuetemplate', 'settings-admin', $parameters, '');
 	}
 
-	/**
-	 * @return string the section ID, e.g. 'sharing'
-	 */
 	public function getSection() {
 		return 'issuetemplate';
 	}
 
-	/**
-	 * @return int whether the form should be rather on the top or bottom of
-	 * the admin section. The forms are arranged in ascending order of the
-	 * priority values. It is required to return a value between 0 and 100.
-	 *
-	 * E.g.: 70
-	 */
 	public function getPriority() {
 		return 10;
+	}
+
+	private function getInstallMethod() {
+		$base = \OC::$SERVERROOT;
+		if(file_exists($base . '/.git')) {
+			return "git";
+		}
+	}
+
+	private function getAppList() {
+		$apps = \OC_App::getAllApps();
+		$enabledApps = $disabledApps = [];
+		$versions = \OC_App::getAppVersions();
+		//sort enabled apps above disabled apps
+		foreach ($apps as $app) {
+			if ($this->appManager->isInstalled($app)) {
+				$enabledApps[] = $app;
+			} else {
+				$disabledApps[] = $app;
+			}
+		}
+		$apps = ['enabled' => [], 'disabled' => []];
+		sort($enabledApps);
+		foreach ($enabledApps as $app) {
+			$apps['enabled'][$app] = (isset($versions[$app])) ? $versions[$app] : true;
+		}
+		sort($disabledApps);
+		foreach ($disabledApps as $app) {
+			$apps['disabled'][$app] = null;
+		}
+		return $apps;
+	}
+
+	private function getConfig() {
+
+		$keys = $this->systemConfig->getKeys();
+		$configs = [];
+		foreach ($keys as $key) {
+			if (true) {
+				$value = $this->systemConfig->getFilteredValue($key, serialize(null));
+			} else {
+				$value = $this->systemConfig->getValue($key, serialize(null));
+			}
+			if ($value !== 'N;') {
+				$configs[$key] = $value;
+			}
+		}
+		return $configs;
 	}
 
 }

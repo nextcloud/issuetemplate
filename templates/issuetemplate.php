@@ -1,14 +1,3 @@
-### Steps to reproduce
-1.
-2.
-3.
-
-### Expected behaviour
-Tell us what should happen
-
-### Actual behaviour
-Tell us what happens instead
-
 ### Server configuration
 **Operating system**: <?php p($_['os']); ?>
 
@@ -27,16 +16,15 @@ Tell us what happens instead
 
 **Updated from an older Nextcloud/ownCloud or fresh install:**
 
-**Where did you install Nextcloud from:**
+
+**Where did you install Nextcloud from:** <?php p($_['installMethod']); ?>
 
 **Signing status:**
 <details>
 	<summary>Signing status</summary>
 
 	```
-	Login as admin user into your Nextcloud and access
-	http://example.com/index.php/settings/integrity/failed
-	paste the results here.
+	<?php p(implode($_['integrity'],",")); ?>
 	```
 </details>
 
@@ -45,9 +33,17 @@ Tell us what happens instead
 	<summary>App list</summary>
 
 	```
-	If you have access to your command line run e.g.:
-	sudo -u www-data php occ app:list
-	from within your Nextcloud installation folder
+	Enabled:
+<?php
+	foreach ($_['apps']['enabled'] as $name => $version) {
+		p("\t - " . $name . ": " . $version . "\n");
+	} ?>
+
+	Disabled:
+<?php
+	foreach ($_['apps']['disabled'] as $name => $version) {
+		p("\t - " . $name . "\n");
+	} ?>
 	```
 </details>
 
@@ -55,16 +51,10 @@ Tell us what happens instead
 <details>
 	<summary>Config report</summary>
 
-	```
-	If you have access to your command line run e.g.:
-	sudo -u www-data php occ config:list system
-	from within your Nextcloud installation folder
+```
+<?php print_unescaped(print_r(json_encode($_['config'], JSON_PRETTY_PRINT), true)); ?>
 
-	or
-
-	Insert your config.php content here
-	(Without the database password, passwordsalt and secret)
-	```
+```
 </details>
 
 **Are you using external storage, if yes which one:** local/smb/sftp/...
@@ -73,6 +63,7 @@ Tell us what happens instead
 
 **Are you using an external user-backend, if yes which one:** LDAP/ActiveDirectory/Webdav/...
 
+<?php if(array_key_exists('user_ldap', $_['apps']['enabled'])) { ?>
 #### LDAP configuration (delete this part if not used)
 <details>
 	<summary>LDAP config</summary>
@@ -90,7 +81,7 @@ Tell us what happens instead
 	Eventually replace sensitive data as the name/IP-address of your LDAP server or groups.
 	```
 </details>
-
+<?php } ?>
 ### Client configuration
 **Browser:**
 
