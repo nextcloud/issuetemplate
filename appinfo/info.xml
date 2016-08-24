@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<info>
+    <id>issuetemplate</id>
+    <name>Issue Template</name>
+    <description>Generate prefilled issue for reporting on GitHub</description>
+    <licence>AGPL</licence>
+    <author>Julius Härtl</author>
+    <version>0.0.1</version>
+    <namespace>IssueTemplate</namespace>
+    <category>tool</category>
+    <dependencies>
+        <owncloud min-version="" />
+    </dependencies>
+    <settings>
+        <admin-section>OCA\IssueTemplate\Settings\Section</admin-section>
+        <admin>OCA\IssueTemplate\Settings\Admin</admin>
+    </settings>
+</info>
