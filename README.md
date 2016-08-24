@@ -2,7 +2,7 @@
 
 Nextcloud app to prefill github issue with current server information.
 
-![Screenshot](https://bitgrid.net/~jus/2016-08-24-174106_1344x674_scrot.png)
+![Screenshot](https://raw.githubusercontent.com/juliushaertl/issuetemplate/master/screenshot.png)
 
 Place this app in **nextcloud/apps/**
 
