@@ -76,7 +76,8 @@ class Admin implements ISettings {
 		$parameters = [
 			'issueTemplate' => $issueTemplate->render(),
 		];
-
+		\OC_Util::addScript('issuetemplate','script');
+		\OC_Util::addStyle('issuetemplate','style');
 		return new TemplateResponse('issuetemplate', 'settings-admin', $parameters, '');
 	}
 

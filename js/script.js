@@ -11,20 +11,13 @@
 (function ($, OC) {
 
 	$(document).ready(function () {
-		$('#hello').click(function () {
-			alert('Hello from your script file');
-		});
-
-		$('#echo').click(function () {
-			var url = OC.generateUrl('/apps/issuetemplate/echo');
-			var data = {
-				echo: $('#echo-content').val()
-			};
-
-			$.post(url, data).success(function (response) {
-				$('#echo-result').text(response.echo);
-			});
-
+		$('#submit-issue').click(function (e) {
+			e.preventDefault();
+			var body = "";
+			body += $('#issue-description').val();
+			body += "\n\n";
+			body += $('#issue-serverinfo').val();
+			window.open("https://github.com/nextcloud/server/issues/new?body=" + encodeURIComponent(body));
 		});
 	});
 
