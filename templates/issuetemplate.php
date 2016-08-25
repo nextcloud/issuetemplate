@@ -23,28 +23,29 @@
 <details>
 	<summary>Signing status</summary>
 
-	```
-	<?php p(implode($_['integrity'],",")); ?>
-	```
+```
+<?php print_unescaped(print_r(json_encode($_['integrity'], JSON_PRETTY_PRINT), true)); ?>
+
+```
+
 </details>
 
 **List of activated apps:**
 <details>
 	<summary>App list</summary>
-
-	```
-	Enabled:
+```
+Enabled:
 <?php
 	foreach ($_['apps']['enabled'] as $name => $version) {
-		p("\t - " . $name . ": " . $version . "\n");
+		p(" - " . $name . ": " . $version . "\n");
 	} ?>
 
-	Disabled:
+Disabled:
 <?php
 	foreach ($_['apps']['disabled'] as $name => $version) {
-		p("\t - " . $name . "\n");
+		p(" - " . $name . "\n");
 	} ?>
-	```
+```
 </details>
 
 **The content of config/config.php:**

@@ -61,13 +61,13 @@ class Admin implements ISettings {
 
 	public function getForm() {
 		$data = array(
-			'version' => $this->config->getSystemValue('version'),
+			'version' => \OC_Util::getHumanVersion() . " - " . $this->config->getSystemValue('version'),
 			'os' => php_uname(),
-			'php' => PHP_VERSION,
+			'php' => PHP_VERSION . "\nModules loaded: " . implode(", ", get_loaded_extensions()),
 			'dbserver' => $this->config->getSystemValue('dbtype'),
-			'webserver' => $_SERVER['software'] . " " . php_sapi_name(),
+			'webserver' => $_SERVER['SERVER_SOFTWARE'] . " (" . php_sapi_name() . ")",
 			'installMethod' => $this->getInstallMethod(),
-			'integrity' => $this->checker->verifyCoreSignature(),
+			'integrity' => $this->getIntegrityResults(),
 			'apps' => $this->getAppList(),
 			'config' => $this->getConfig(),
 		);
@@ -87,6 +87,13 @@ class Admin implements ISettings {
 
 	public function getPriority() {
 		return 10;
+	}
+
+	private function getIntegrityResults() {
+		if(!$this->checker->isCodeCheckEnforced()) {
+			return 'Integrity checker has been disabled. Integrity cannot be verified.';
+		}
+		return $this->checker->getResults();
 	}
 
 	private function getInstallMethod() {
