@@ -31,6 +31,10 @@ use OCP\Settings\ISettings;
 use OC\IntegrityCheck\Checker;
 use OCP\App\IAppManager;
 use OC\SystemConfig;
+use OCP\IDBConnection;
+
+
+
 class Admin implements ISettings {
 	/** @var IConfig */
 	private $config;
@@ -50,26 +54,31 @@ class Admin implements ISettings {
 								IL10N $l,
 								IURLGenerator $urlGenerator,
 								Checker $checker,
-								IAppManager $appManager) {
+								IAppManager $appManager,
+								IDBConnection $connection
+) {
 		$this->config = $config;
 		$this->l = $l;
 		$this->urlGenerator = $urlGenerator;
 		$this->checker = $checker;
 		$this->appManager = $appManager;
 		$this->systemConfig = \OC::$server->query("SystemConfig");
+		$this->connection = $connection;
 	}
 
 	public function getForm() {
 		$data = array(
-			'version' => \OC_Util::getHumanVersion() . " - " . $this->config->getSystemValue('version'),
-			'os' => php_uname(),
-			'php' => PHP_VERSION . "\nModules loaded: " . implode(", ", get_loaded_extensions()),
-			'dbserver' => $this->config->getSystemValue('dbtype'),
+			'version' => $this->getNextcloudVersion(),
+			'os' => $this->getOsVersion(),
+			'php' => $this->getPhpVersion(),
+			'dbserver' => $this->getDatabaseInfo(),
 			'webserver' => $_SERVER['SERVER_SOFTWARE'] . " (" . php_sapi_name() . ")",
 			'installMethod' => $this->getInstallMethod(),
 			'integrity' => $this->getIntegrityResults(),
 			'apps' => $this->getAppList(),
 			'config' => $this->getConfig(),
+			'encryption' => $this->getEncryptionInfo(),
+			'external' => $this->getExternalStorageInfo()
 		);
 
 		$issueTemplate = new TemplateResponse('issuetemplate', 'issuetemplate', $data, '');
@@ -87,6 +96,71 @@ class Admin implements ISettings {
 
 	public function getPriority() {
 		return 10;
+	}
+
+	private function getNextcloudVersion() {
+		return \OC_Util::getHumanVersion() . " - " . $this->config->getSystemValue('version');
+	}
+	private function getOsVersion() {
+		return php_uname();
+	}
+	private function getPhpVersion() {
+		return PHP_VERSION . "\nModules loaded: " . implode(", ", get_loaded_extensions());
+	}
+
+	protected function getDatabaseInfo() {
+		return $this->config->getSystemValue('dbtype') ." " . $this->getDatabaseVersion();
+	}
+
+	/**
+	 * original source from nextcloud/survey_client
+	 * @link https://github.com/nextcloud/survey_client/blob/master/lib/Categories/Database.php#L80-L107
+	 *
+	 * @copyright Copyright (c) 2016, ownCloud, Inc.
+	 * @author Joas Schilling <coding@schilljs.com>
+	 * @license AGPL-3.0
+	 */
+	private function getDatabaseVersion() {
+		switch ($this->config->getSystemValue('dbtype')) {
+			case 'sqlite':
+			case 'sqlite3':
+				$sql = 'SELECT sqlite_version() AS version';
+				break;
+			case 'oci':
+				$sql = 'SELECT version FROM v$instance';
+				break;
+			case 'mysql':
+			case 'pgsql':
+			default:
+				$sql = 'SELECT VERSION() AS version';
+				break;
+		}
+		$result = $this->connection->executeQuery($sql);
+		$row = $result->fetch();
+		$result->closeCursor();
+		if ($row) {
+			return $this->cleanVersion($row['version']);
+		}
+		return 'N/A';
+	}
+
+	/**
+	 * Try to strip away additional information
+	 *
+	 * @copyright Copyright (c) 2016, ownCloud, Inc.
+	 * @author Joas Schilling <coding@schilljs.com>
+	 * @license AGPL-3.0
+	 *
+	 * @param string $version E.g. `5.6.27-0ubuntu0.14.04.1`
+	 * @return string `5.6.27`
+	 */
+	protected function cleanVersion($version) {
+		$matches = [];
+		preg_match('/^(\d+)(\.\d+)(\.\d+)/', $version, $matches);
+		if (isset($matches[0])) {
+			return $matches[0];
+		}
+		return $version;
 	}
 
 	private function getIntegrityResults() {
@@ -127,6 +201,23 @@ class Admin implements ISettings {
 		return $apps;
 	}
 
+	protected function getEncryptionInfo() {
+		return $this->config->getAppValue('core', 'encryption_enabled', 'no');
+	}
+	protected function getExternalStorageInfo() {
+		if(\OC::$server->getAppManager()->isEnabledForUser('files_external')) {
+			// $mounts = $this->globalService->getStorageForAllUsers();
+			// Global storage services
+			// https://github.com/nextcloud/server/blob/8c7d7d7746e76b77ad86cee3aae5dbd4d1bcd896/apps/files_external/lib/Command/ListCommand.php
+			$backendService = \OC::$server->query('OCA\Files_External\Service\BackendService');
+			$result = array();
+			foreach ($backendService->getAvailableBackends() as $backend) {
+				$result[] = $backend->getStorageClass();
+			}
+			return $result;
+		}
+		return "files_external is disabled";
+	}
 	private function getConfig() {
 
 		$keys = $this->systemConfig->getKeys();

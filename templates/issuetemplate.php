@@ -58,9 +58,11 @@ Disabled:
 ```
 </details>
 
-**Are you using external storage, if yes which one:** local/smb/sftp/...
+**Are you using external storage, if yes which one:** <?php print_unescaped(print_r($_['external'], true)); ?>
 
-**Are you using encryption:** yes/no
+
+**Are you using encryption:** <?php p($_['encryption']); ?>
+
 
 **Are you using an external user-backend, if yes which one:** LDAP/ActiveDirectory/Webdav/...
 
