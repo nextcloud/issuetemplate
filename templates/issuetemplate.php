@@ -86,7 +86,8 @@ Disabled:
 </details>
 <?php } ?>
 ### Client configuration
-**Browser:**
+**Browser:** <?php p($_['browser']); ?>
+
 
 **Operating system:**
 

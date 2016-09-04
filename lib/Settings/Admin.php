@@ -78,7 +78,8 @@ class Admin implements ISettings {
 			'apps' => $this->getAppList(),
 			'config' => $this->getConfig(),
 			'encryption' => $this->getEncryptionInfo(),
-			'external' => $this->getExternalStorageInfo()
+			'external' => $this->getExternalStorageInfo(),
+			'browser' => $this->getBrowser()
 		);
 
 		$issueTemplate = new TemplateResponse('issuetemplate', 'issuetemplate', $data, '');
@@ -233,6 +234,16 @@ class Admin implements ISettings {
 			}
 		}
 		return $configs;
+	}
+
+	private function getBrowser() {
+		$browser = get_browser(null, true);
+		if(!$browser) {
+			return $_SERVER['HTTP_USER_AGENT'];
+		} else {
+			$string = ' ' . $browser['browser'] . ' ' . $browser['version'] . ' ' . $browser['plattform'];
+			return $string;
+		}
 	}
 
 }
