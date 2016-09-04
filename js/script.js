@@ -7,7 +7,18 @@
  * @author Julius Härtl <jus@bitgrid.net>
  * @copyright Julius Härtl 2016
  */
-
+function checkLength() {
+	var body = getIssueText();
+	if(body.length>4096) {
+		$('#submit-issue').hide();
+		$('#copyissue').addClass('primary');
+		$('#status-text').html(t('issuetemplate','Issue to long to send over to GitHub. Please copy the text and paste it here:') + ' <a href="https://github.com/nextcloud/server/issues/new">https://github.com/nextcloud/server/issues/new</a>');
+	} else {
+		$('#submit-issue').show();
+		$('#copyissue').removeClass('primary');
+		$('#status-text').text('GitHub might show an error page if you are not logged in.');
+	}
+}
 function getIssueText() {
 	var body = "";
 	body += $('#issue-description').val();
@@ -19,6 +30,8 @@ function getIssueText() {
 (function ($, OC) {
 
 	$(document).ready(function () {
+
+		checkLength();
 
 		$('#submit-issue').click(function (e) {
 			e.preventDefault();
@@ -34,16 +47,7 @@ function getIssueText() {
 		});
 
 		$('textarea').bind('input propertychange', function() {
-			var body = getIssueText();
-			if(body.length>3190) {
-				$('#submit-issue').hide();
-				$('#copyissue').addClass('primary');
-				$('#status-text').html(t('Issue to long to send over to GitHub. Please copy the text and paste it here:') + ' <a href="https://github.com/nextcloud/server/issues/new">https://github.com/nextcloud/server/issues/new</a>');
-			} else {
-				$('#submit-issue').show();
-				$('#copyissue').removeClass('primary');
-				$('#status-text').text('');
-			}
+			checkLength();
 		});
 
 	});
