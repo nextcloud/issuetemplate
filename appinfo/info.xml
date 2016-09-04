@@ -2,7 +2,7 @@
 <info>
     <id>issuetemplate</id>
     <name>Issue Template</name>
-    <description>Generate prefilled issue for reporting on GitHub</description>
+    <description>Easily report Nextcloud bugs with a prefilled issue template for reporting on GitHub</description>
     <licence>AGPL</licence>
     <author>Julius Härtl</author>
     <version>0.0.1</version>
