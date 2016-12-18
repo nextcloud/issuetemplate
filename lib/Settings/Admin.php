@@ -85,6 +85,7 @@ class Admin implements ISettings {
 		$issueTemplate = new TemplateResponse('issuetemplate', 'issuetemplate', $data, '');
 		$parameters = [
 			'issueTemplate' => $issueTemplate->render(),
+			'repos' => $this->getAppRepos(),
 		];
 		\OC_Util::addScript('issuetemplate','script');
 		\OC_Util::addStyle('issuetemplate','style');
@@ -182,6 +183,7 @@ class Admin implements ISettings {
 		$apps = \OC_App::getAllApps();
 		$enabledApps = $disabledApps = [];
 		$versions = \OC_App::getAppVersions();
+
 		//sort enabled apps above disabled apps
 		foreach ($apps as $app) {
 			if ($this->appManager->isInstalled($app)) {
@@ -202,9 +204,29 @@ class Admin implements ISettings {
 		return $apps;
 	}
 
+	public function getAppRepos() {
+		$apps = \OC_App::getAllApps();
+		$repos = array(
+			"Nextcloud server repository" => "https://github.com/nextcloud/server/issues"
+		);
+		foreach ($apps as $app) {
+			if ($this->appManager->isInstalled($app)) {
+				$appinfo = \OC_App::getAppInfo($app);
+				if (preg_match("/https:\/\/(www.)?github.com\/(.*)\/issues/i", $appinfo['bugs'])) {
+					$appTitle = $appinfo['name'];
+					$repos[$appTitle] = $appinfo['bugs'];
+				}
+
+			}
+		}
+		return $repos;
+
+	}
+
 	protected function getEncryptionInfo() {
 		return $this->config->getAppValue('core', 'encryption_enabled', 'no');
 	}
+
 	protected function getExternalStorageInfo() {
 		if(\OC::$server->getAppManager()->isEnabledForUser('files_external')) {
 			// $mounts = $this->globalService->getStorageForAllUsers();

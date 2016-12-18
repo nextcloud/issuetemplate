@@ -47,7 +47,9 @@ function getIssueText() {
 		$('#submit-issue').click(function (e) {
 			e.preventDefault();
 			var body = getIssueText();
-			window.open("https://github.com/nextcloud/server/issues/new?body=" + encodeURIComponent(body));
+			var url = $('#repository').val();
+			var title = $('#issue-title').val();
+			window.open(url + "/new/?title=" + encodeURIComponent(title) + "&body=" + encodeURIComponent(body));
 		});
 
 		var copybutton = document.getElementById('copyissue');

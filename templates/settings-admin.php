@@ -5,7 +5,22 @@
 	<p>
 		<?php p($l->t("For reporting potential security issues please see")); ?> <a href="https://nextcloud.com/security/">https://nextcloud.com/security/</a>
 	</p>
-	<textarea id="issue-description" style="width: 100%; height:200px;">### Steps to reproduce
+	<p><strong><?php p($l->t("Please always check if the automatically filled out information is correct and there is nothing important missing, before reporting the issue.")); ?></strong></p>
+
+
+	<form method="GET" action="#">
+		<p>
+			<label for="repository"><?php p($l->t("Affected component")); ?></label>
+			<select id="repository">
+				<?php foreach ($_['repos'] as $name => $url): ?>
+					<option value="<?php p($url); ?>"><?php p($name); ?></option>
+				<?php endforeach; ?>
+			</select>
+		</p>
+		<p>
+			<input type="text" id="issue-title" placeholder="<?php p($l->t("Issue title")); ?>" />
+		</p>
+		<textarea id="issue-description">### Steps to reproduce
 1.
 2.
 3.
