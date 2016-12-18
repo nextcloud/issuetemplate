@@ -33,6 +33,17 @@ function getIssueText() {
 
 		checkLength();
 
+		$('#toggle-details').click(function (e) {
+			$('#issue-serverinfo').slideToggle(function() {
+				if($(this).is(":hidden")) {
+					$('#toggle-details').val("Show");
+				} else {
+					$('#toggle-details').val("Hide");
+				}
+			});
+
+		});
+
 		$('#submit-issue').click(function (e) {
 			e.preventDefault();
 			var body = getIssueText();

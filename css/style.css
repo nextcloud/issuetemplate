@@ -1,6 +1,20 @@
 #issue-description {
-	width: 100%; height:200px;
+	width: 100%;
+	width: calc(100% - 12px);
+	height: 200px;
 }
 #issue-serverinfo {
-	width: 100%; height:300px;
+	width: calc(100% - 12px);
+	height: 300px;
+	color: #888;
+	display: none;
+}
+#issue-title {
+	width: calc(100% - 12px);
+}
+#submit-issue, #copyissue {
+	float:right;
+}
+#issuetemplate form {
+	margin-top: 20px;
 }
