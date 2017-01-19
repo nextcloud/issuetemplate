@@ -16,4 +16,5 @@
         <admin-section>OCA\IssueTemplate\Settings\Section</admin-section>
         <admin>OCA\IssueTemplate\Settings\Admin</admin>
     </settings>
+    <screenshot>https://bitgrid.net/~jus/issuetemplate.png</screenshot>
 </info>

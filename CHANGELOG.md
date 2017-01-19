@@ -1,6 +1,8 @@
-owncloud-issuetemplate (0.0.1)
-* **Security**: Security description here
-* **Backwards incompatible change**: Changes in the API
-* **New dependency**: New dependencies such as a new ownCloud or PHP version
-* **Bugfix**: Bugfix description
-* **Enhancement**: New feature description
+## 0.2.0
+### Added
+- Option to select different app repositories
+- Copy to clipboard button
+
+## 0.1.0
+### Added
+- First release
