@@ -26,8 +26,10 @@ namespace OCA\IssueTemplate\Settings;
 use OCP\IL10N;
 use OCP\IURLGenerator;
 use OCP\Settings\IIconSection;
+use OCP\Settings\ISection;
 
-class Section implements IIconSection {
+/** TODO: Move to IIconSection for NC 12 */
+class Section implements ISection {
 
 	/** @var IL10N */
 	private $l;
