@@ -24,15 +24,19 @@
 namespace OCA\IssueTemplate\Settings;
 
 use OCP\IL10N;
-use OCP\Settings\ISection;
+use OCP\IURLGenerator;
+use OCP\Settings\IIconSection;
 
-class Section implements ISection {
+class Section implements IIconSection {
 
 	/** @var IL10N */
 	private $l;
+	/** @var IURLGenerator */
+	private $urlGenerator;
 
-	public function __construct(IL10N $l) {
+	public function __construct(IL10N $l, IURLGenerator $urlGenerator) {
 		$this->l = $l;
+		$this->urlGenerator = $urlGenerator;
 	}
 
 	public function getID() {
@@ -45,5 +49,9 @@ class Section implements ISection {
 	
 	public function getPriority() {
 		return 30;
+	}
+
+	public function getIcon() {
+		return $this->urlGenerator->imagePath('issuetemplate', 'app-dark.svg');
 	}
 }
