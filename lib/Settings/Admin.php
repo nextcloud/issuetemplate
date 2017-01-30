@@ -212,7 +212,7 @@ class Admin implements ISettings {
 		foreach ($apps as $app) {
 			if ($this->appManager->isInstalled($app)) {
 				$appinfo = \OC_App::getAppInfo($app);
-				if (preg_match("/https:\/\/(www.)?github.com\/(.*)\/issues/i", $appinfo['bugs'])) {
+				if (array_key_exists('bugs', $appinfo) && preg_match("/https:\/\/(www.)?github.com\/(.*)\/issues/i", $appinfo['bugs'])) {
 					$appTitle = $appinfo['name'];
 					$repos[$appTitle] = $appinfo['bugs'];
 				}
@@ -259,7 +259,7 @@ class Admin implements ISettings {
 	}
 
 	private function getBrowser() {
-		$browser = get_browser(null, true);
+		$browser = @get_browser(null, true);
 		if(!$browser) {
 			return $_SERVER['HTTP_USER_AGENT'];
 		} else {
