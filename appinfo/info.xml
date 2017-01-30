@@ -16,5 +16,7 @@
         <admin-section>OCA\IssueTemplate\Settings\Section</admin-section>
         <admin>OCA\IssueTemplate\Settings\Admin</admin>
     </settings>
+    <repository type="git">https://github.com/juliushaertl/issuetemplate.git</repository>
+    <bugs>https://github.com/juliushaertl/issuetemplate/issues</bugs>
     <screenshot>https://bitgrid.net/~jus/issuetemplate.png</screenshot>
 </info>
