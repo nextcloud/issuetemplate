@@ -48,6 +48,8 @@ class Admin implements ISettings {
 	private $appManager;
 	/** @var SystemConfig */
 	private $systemConfig;
+	/** @var IDBConnection */
+	private $connection;
 
 	public function __construct(
 								IConfig $config,
@@ -260,12 +262,22 @@ class Admin implements ISettings {
 
 	private function getBrowser() {
 		$browser = @get_browser(null, true);
-		if(!$browser) {
-			return $_SERVER['HTTP_USER_AGENT'];
-		} else {
-			$string = ' ' . $browser['browser'] . ' ' . $browser['version'] . ' ' . $browser['plattform'];
-			return $string;
+		$browserString = '';
+		if($browser) {
+			if(array_key_exists('browser', $browser)) {
+				$browserString .= $browser['browser'] . ' ';
+			}
+			if(array_key_exists('version', $browser)) {
+				$browserString .= $browser['version'] . ' ';
+			}
+			if(array_key_exists('plattform', $browser)) {
+				$browserString .= $browser['plattform'] . ' ';
+			}
 		}
+		if(empty($browserString)) {
+			return $_SERVER['HTTP_USER_AGENT'];
+		}
+		return $browserString;
 	}
 
 }
