@@ -209,7 +209,9 @@ class Admin implements ISettings {
 	public function getAppRepos() {
 		$apps = \OC_App::getAllApps();
 		$repos = array(
-			"Nextcloud server repository" => "https://github.com/nextcloud/server/issues"
+			$this->l->t('Nextcloud server repository') => 'https://github.com/nextcloud/server/issues',
+			$this->l->t('Nextcloud Android app repository') => 'https://github.com/nextcloud/android/issues',
+			$this->l->t('Nextcloud iOS app repository') => 'https://github.com/nextcloud/ios/issues'
 		);
 		foreach ($apps as $app) {
 			if ($this->appManager->isInstalled($app)) {
