@@ -12,10 +12,11 @@
 		<p>
 			<label for="repository"><?php p($l->t("Affected component")); ?></label>
 			<select id="repository">
-				<?php foreach ($_['repos'] as $name => $url): ?>
-					<option value="<?php p($url); ?>"><?php p($name); ?></option>
+				<?php foreach ($_['repos'] as $id => $info): ?>
+					<option value="<?php p($info['bugs']); ?>" <?php if($id === $_['app']) { p(' selected'); } ?> data-id="<?php p($id); ?>"><?php p($info['name']); ?></option>
 				<?php endforeach; ?>
 			</select>
+			<?php p($_['app']); ?>
 		</p>
 		<p>
 			<input type="text" id="issue-title" placeholder="<?php p($l->t("Issue title")); ?>" />
