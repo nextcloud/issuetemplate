@@ -1,22 +1,21 @@
-### Server configuration
-#### Operating system:
-&nbsp;&nbsp;&nbsp;&nbsp;<?php p($_['os']); ?>
+### General server configuration
 
-#### Web server:
-&nbsp;&nbsp;&nbsp;&nbsp;<?php p($_['webserver']); ?>
+**Operating system:** <?php p($_['os']); ?>
 
-#### Database:
-&nbsp;&nbsp;&nbsp;&nbsp;<?php p($_['dbserver']); ?>
 
-#### PHP version:
-<?php
+**Web server:** <?php p($_['webserver']); ?>
+
+
+**Database:** <?php p($_['dbserver']); ?>
+
+
+**PHP version:** <?php
         $parts = explode ('Modules loaded: ', $_['php']);
         $phpVersion = $parts[0];
-        $modules = explode (', ', $parts[1]); ?>
-
-&nbsp;&nbsp;&nbsp;&nbsp;<?php p($phpVersion); ?>
+        $modules = explode (', ', $parts[1]);
+        p($phpVersion);?>
 <details>
-        <summary>Modules loaded:</summary>
+        <summary>PHP-modules loaded</summary>
 
 ```
 <?php
@@ -26,16 +25,25 @@
 ```
 </details>
 
-#### Nextcloud version:
-&nbsp;&nbsp;&nbsp;&nbsp;<?php p($_['version']); ?>
+### Nextcloud configuration
 
-#### Updated from an older Nextcloud/ownCloud or fresh install:
-&nbsp;&nbsp;&nbsp;&nbsp;YOUR ANSWER HERE
+**Nextcloud version:** <?php p($_['version']); ?>
 
-#### Where did you install Nextcloud from:
-&nbsp;&nbsp;&nbsp;&nbsp;<?php p($_['installMethod']); ?> YOUR ANSWER HERE
 
-#### Signing status:
+**Updated from an older Nextcloud/ownCloud or fresh install:** YOUR ANSWER HERE
+
+
+**Where did you install Nextcloud from:** <?php p($_['installMethod']); ?> YOUR ANSWER HERE
+
+
+**Are you using external storage, if yes which one:** <?php print_unescaped(print_r($_['external'], true)); ?>
+
+
+**Are you using encryption:** <?php p($_['encryption']); ?>
+
+
+**Are you using an external user-backend, if yes which one:** YOUR ANSWER HERE (LDAP/ActiveDirectory/Webdav/...)
+
 <details>
         <summary>Signing status</summary>
 
@@ -45,10 +53,8 @@
 ```
 </details>
 
-#### List of installed apps:
-
 <details>
-        <summary>Enabled:</summary>
+        <summary>Enabled apps</summary>
 
 ```
 <?php
@@ -59,7 +65,7 @@
 </details>
 
 <details>
-        <summary>Disabled:</summary>
+        <summary>Disabled apps</summary>
 
 ```
 <?php
@@ -69,9 +75,8 @@
 ```
 </details>
 
-#### The content of config/config.php:
 <details>
-        <summary>Config report</summary>
+        <summary>Content of config/config.php</summary>
 
 ```
 <?php print_unescaped(print_r(json_encode($_['config'], JSON_PRETTY_PRINT), true)); ?>
@@ -79,17 +84,7 @@
 ```
 </details>
 
-#### Are you using external storage, if yes which one:
-&nbsp;&nbsp;&nbsp;&nbsp;<?php print_unescaped(print_r($_['external'], true)); ?>
-
-#### Are you using encryption:
-&nbsp;&nbsp;&nbsp;&nbsp;<?php p($_['encryption']); ?>
-
-#### Are you using an external user-backend, if yes which one:
-&nbsp;&nbsp;&nbsp;&nbsp; YOUR ANSWER HERE (LDAP/ActiveDirectory/Webdav/...)
-
 <?php if(array_key_exists('user_ldap', $_['apps']['enabled'])) { ?>
-#### LDAP configuration (delete this part if not used)
 <details>
         <summary>LDAP config</summary>
 
@@ -108,14 +103,14 @@ Eventually replace sensitive data as the name/IP-address of your LDAP server or 
 <?php } ?>
 
 ### Client configuration
-#### Browser:
-&nbsp;&nbsp;&nbsp;&nbsp;<?php p($_['browser']); ?>
 
-#### Operating system:
-&nbsp;&nbsp;&nbsp;&nbsp;YOUR ANSWER HERE
+**Browser:** <?php p($_['browser']); ?>
+
+
+**Operating system:** YOUR ANSWER HERE
 
 ### Logs
-#### Web server error log
+
 <details>
         <summary>Web server error log</summary>
 
@@ -124,16 +119,14 @@ Insert your webserver log here
 ```
 </details>
 
-#### Nextcloud log (data/nextcloud.log)
 <details>
-        <summary>Nextcloud log</summary>
+        <summary>Nextcloud log (data/nextcloud.log)</summary>
 
 ```
 Insert your Nextcloud log here
 ```
 </details>
 
-#### Browser log
 <details>
         <summary>Browser log</summary>
 
