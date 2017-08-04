@@ -1,3 +1,8 @@
+## 0.2.2
+### Fixed
+- Add android repo
+- Improve markdown styling and readability
+
 ## 0.2.1
 ### Fixed
 - Avoid log spam by missing key warnings
