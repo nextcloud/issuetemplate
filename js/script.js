@@ -12,7 +12,8 @@ function checkLength() {
 	if(body.length>4096) {
 		$('#submit-issue').hide();
 		$('#copyissue').addClass('primary');
-		$('#status-text').html(t('issuetemplate','Issue to long to send over to GitHub. Please copy the text and paste it here:') + ' <a href="https://github.com/nextcloud/server/issues/new">https://github.com/nextcloud/server/issues/new</a>');
+		var url = $('#repository').val();
+		$('#status-text').html(t('issuetemplate','Issue to long to send over to GitHub. Please copy the text and paste it here:') + ' <a href="'+url+'">'+url+'</a>');
 	} else {
 		$('#submit-issue').show();
 		$('#copyissue').removeClass('primary');
@@ -60,6 +61,9 @@ function getIssueText() {
 		});
 
 		$('textarea').bind('input propertychange', function() {
+			checkLength();
+		});
+		$('#repository').change(function() {
 			checkLength();
 		});
 
