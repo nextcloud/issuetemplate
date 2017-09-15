@@ -5,12 +5,11 @@
     <description>Easily report Nextcloud bugs with a prefilled issue template for reporting on GitHub</description>
     <licence>AGPL</licence>
     <author>Julius Härtl</author>
-    <version>0.2.2</version>
+    <version>0.3.0-dev1</version>
     <namespace>IssueTemplate</namespace>
     <category>tool</category>
     <dependencies>
-        <owncloud min-version="9.1" max-version="9.2" />
-        <nextcloud min-version="10" max-version="12" />
+        <nextcloud min-version="12" max-version="13" />
     </dependencies>
     <settings>
         <admin-section>OCA\IssueTemplate\Settings\Section</admin-section>
