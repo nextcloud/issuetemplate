@@ -12,9 +12,30 @@
 #issue-title {
 	width: calc(100% - 12px);
 }
-#submit-issue, #copyissue {
+#submit-issue, input[type=button] {
 	float:right;
 }
 #issuetemplate form {
 	margin-top: 20px;
 }
+
+#issuetemplate .wizard-buttons {
+	overflow: hidden;
+}
+#issuetemplate .icon {
+	display: inline-block;
+}
+#issuetemplate .icon.hidden {
+	display: none;
+}
+div.github-settings p {
+	margin-bottom: 10px;
+}
+div.github-settings label {
+	width: 150px;
+	display: inline-block;
+}
+div.github-settings input {
+	width: 200px;
+}
+

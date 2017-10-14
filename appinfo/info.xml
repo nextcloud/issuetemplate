@@ -16,6 +16,6 @@
         <admin>OCA\IssueTemplate\Settings\Admin</admin>
     </settings>
     <repository type="git">https://github.com/juliushaertl/issuetemplate.git</repository>
-    <bugs>https://github.com/juliushaertl/issuetemplate/issues</bugs>
+    <bugs>https://github.com/juliushaertl/testrepo/issues</bugs>
     <screenshot>https://bitgrid.net/~jus/issuetemplate.png</screenshot>
 </info>

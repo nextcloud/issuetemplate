@@ -1,6 +1,7 @@
 <?php
 ?>
 <div id="issuetemplate" class="section">
+
 	<h2 class="inlineblock"><?php p($l->t('Issue reporting')); ?></h2>
 	<p>
 		<?php p($l->t("For reporting potential security issues please see")); ?> <a href="https://nextcloud.com/security/">https://nextcloud.com/security/</a>
@@ -35,10 +36,24 @@ Tell us what happens instead</textarea>
 
 		<p id="status-text"> </p>
 
-		<input id="copyissue" type="button" value=" <?php p($l->t("Copy text to clipboard")); ?> " />
-		<input class="primary" type="submit" value=" <?php p($l->t("File a new issue on GitHub")); ?> " id="submit-issue" />
-
+		<div class="wizard-buttons">
+			<input id="copyissue" type="button" class="<?php if ($_['config-github-token'] === true) { ?> hidden<?php } ?>" value=" <?php p($l->t("Copy text to clipboard")); ?> " />
+			<input id="submit-github-http" type="button" class="primary <?php if ($_['config-github-token'] === true) { ?> hidden<?php } ?>" type="submit" value=" <?php p($l->t("Create a new issue")); ?> " id="submit-issue" />
+			<input id="submit-github-api" type="button" class="primary <?php if ($_['config-github-token'] === false) { ?> hidden<?php } ?>" value=" <?php p($l->t("Create a new issue")); ?> "/>
+		</div>
 	</form>
+
+	<h2 class="github-settings">
+		<?php p($l->t('Setup with GitHub')); ?>
+		<span class="icon icon-checkmark-color<?php if ($_['config-github-token'] === false) { ?> hidden<?php } ?>"></span>
+		<span class="icon icon-loading-small hidden"></span>
+		<span class="icon icon-error-color hidden"></span>
+
+	</h2>
+	<div class="github-settings<?php if ($_['config-github-token'] === true) { ?> hidden<?php } ?>">
+		<p><?php print_unescaped($l->t('In order to automatically create issues on GitHub, you need to create a <a href="https://github.com/settings/tokens" rel="nofollow">personal access token</a> and add it to the issue reporting app:')); ?></p>
+		<p><label>Access token</label><input type="text" id="issuetemplate-access-token" placeholder="GitHub personal access token" /><button id="issuetemplate-access-token-save">Save</button></p>
+	</div>
 
 </div>
 

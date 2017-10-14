@@ -34,7 +34,6 @@ use OC\SystemConfig;
 use OCP\IDBConnection;
 
 
-
 class Admin implements ISettings {
 	/** @var IConfig */
 	private $config;
@@ -50,25 +49,30 @@ class Admin implements ISettings {
 	private $systemConfig;
 	/** @var IDBConnection */
 	private $connection;
+	/** @var string */
+	private $userId;
 
 	public function __construct(
-								IConfig $config,
-								IL10N $l,
-								IURLGenerator $urlGenerator,
-								Checker $checker,
-								IAppManager $appManager,
-								IDBConnection $connection
-) {
+		IConfig $config,
+		IL10N $l,
+		IURLGenerator $urlGenerator,
+		Checker $checker,
+		IAppManager $appManager,
+		IDBConnection $connection,
+		$userId
+	) {
 		$this->config = $config;
 		$this->l = $l;
 		$this->urlGenerator = $urlGenerator;
 		$this->checker = $checker;
 		$this->appManager = $appManager;
-		$this->systemConfig = \OC::$server->query("SystemConfig");
+		$this->systemConfig = \OC::$server->getSystemConfig();
 		$this->connection = $connection;
+		$this->userId = $userId;
 	}
 
 	public function getForm() {
+		$tokenExists = $this->config->getUserValue($this->userId, 'issuetemplate', 'github_access_token', '') !== '';
 		$data = array(
 			'version' => $this->getNextcloudVersion(),
 			'os' => $this->getOsVersion(),
@@ -81,16 +85,18 @@ class Admin implements ISettings {
 			'config' => $this->getConfig(),
 			'encryption' => $this->getEncryptionInfo(),
 			'external' => $this->getExternalStorageInfo(),
-			'browser' => $this->getBrowser()
+			'browser' => $this->getBrowser(),
 		);
 
 		$issueTemplate = new TemplateResponse('issuetemplate', 'issuetemplate', $data, '');
 		$parameters = [
 			'issueTemplate' => $issueTemplate->render(),
 			'repos' => $this->getAppRepos(),
+			'config-github-token' => (bool)$tokenExists,
 		];
-		\OC_Util::addScript('issuetemplate','script');
-		\OC_Util::addStyle('issuetemplate','style');
+		\OC_Util::addScript('issuetemplate', 'vue');
+		\OC_Util::addScript('issuetemplate', 'script');
+		\OC_Util::addStyle('issuetemplate', 'style');
 		return new TemplateResponse('issuetemplate', 'settings-admin', $parameters, '');
 	}
 
@@ -105,19 +111,22 @@ class Admin implements ISettings {
 	private function getNextcloudVersion() {
 		return \OC_Util::getHumanVersion() . " - " . $this->config->getSystemValue('version');
 	}
+
 	private function getOsVersion() {
 		return php_uname();
 	}
+
 	private function getPhpVersion() {
 		return PHP_VERSION . "\nModules loaded: " . implode(", ", get_loaded_extensions());
 	}
 
 	protected function getDatabaseInfo() {
-		return $this->config->getSystemValue('dbtype') ." " . $this->getDatabaseVersion();
+		return $this->config->getSystemValue('dbtype') . " " . $this->getDatabaseVersion();
 	}
 
 	/**
 	 * original source from nextcloud/survey_client
+	 *
 	 * @link https://github.com/nextcloud/survey_client/blob/master/lib/Categories/Database.php#L80-L107
 	 *
 	 * @copyright Copyright (c) 2016, ownCloud, Inc.
@@ -168,7 +177,7 @@ class Admin implements ISettings {
 	}
 
 	private function getIntegrityResults() {
-		if(!$this->checker->isCodeCheckEnforced()) {
+		if (!$this->checker->isCodeCheckEnforced()) {
 			return 'Integrity checker has been disabled. Integrity cannot be verified.';
 		}
 		return $this->checker->getResults();
@@ -176,7 +185,7 @@ class Admin implements ISettings {
 
 	private function getInstallMethod() {
 		$base = \OC::$SERVERROOT;
-		if(file_exists($base . '/.git')) {
+		if (file_exists($base . '/.git')) {
 			return "git";
 		}
 	}
@@ -232,7 +241,7 @@ class Admin implements ISettings {
 	}
 
 	protected function getExternalStorageInfo() {
-		if(\OC::$server->getAppManager()->isEnabledForUser('files_external')) {
+		if (\OC::$server->getAppManager()->isEnabledForUser('files_external')) {
 			// $mounts = $this->globalService->getStorageForAllUsers();
 			// Global storage services
 			// https://github.com/nextcloud/server/blob/8c7d7d7746e76b77ad86cee3aae5dbd4d1bcd896/apps/files_external/lib/Command/ListCommand.php
@@ -245,6 +254,7 @@ class Admin implements ISettings {
 		}
 		return "files_external is disabled";
 	}
+
 	private function getConfig() {
 
 		$keys = $this->systemConfig->getKeys();
@@ -265,18 +275,18 @@ class Admin implements ISettings {
 	private function getBrowser() {
 		$browser = @get_browser(null, true);
 		$browserString = '';
-		if($browser) {
-			if(array_key_exists('browser', $browser)) {
+		if ($browser) {
+			if (array_key_exists('browser', $browser)) {
 				$browserString .= $browser['browser'] . ' ';
 			}
-			if(array_key_exists('version', $browser)) {
+			if (array_key_exists('version', $browser)) {
 				$browserString .= $browser['version'] . ' ';
 			}
-			if(array_key_exists('plattform', $browser)) {
+			if (array_key_exists('plattform', $browser)) {
 				$browserString .= $browser['plattform'] . ' ';
 			}
 		}
-		if(empty($browserString)) {
+		if (empty($browserString)) {
 			return $_SERVER['HTTP_USER_AGENT'];
 		}
 		return $browserString;

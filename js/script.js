@@ -67,6 +67,38 @@ function getIssueText() {
 			checkLength();
 		});
 
+		/** Github Settings */
+		$('#issuetemplate-access-token-save').click(function() {
+			var token = $('#issuetemplate-access-token').val();
+			$('h2.github-settings .icon-checkmark-color').addClass('hidden');
+			$('h2.github-settings .icon-loading-small').removeClass('hidden');
+			$.post(OC.generateUrl('/apps/issuetemplate/token'),
+				{'token' : token}
+			).done(function(response) {
+				$('div.github-settings').toggleClass('hidden');
+				$('h2.github-settings .icon-checkmark-color').removeClass('hidden');
+				$('h2.github-settings .icon-loading-small').addClass('hidden');
+				$('h2.github-settings .icon-error-color').addClass('hidden');
+			}).fail(function(response) {
+				$('h2.github-settings .icon-checkmark-color').addClass('hidden');
+				$('h2.github-settings .icon-loading-small').addClass('hidden');
+				$('h2.github-settings .icon-error-color').removeClass('hidden');
+			});
+		});
+		$('h2.github-settings').click(function () {
+			$('div.github-settings').toggleClass('hidden');
+		});
+
+		$('#issue-title').change(function () {
+			var repo = $('#repository').val();
+			$.get(
+				OC.generateUrl('/apps/issuetemplate/find?repository='+repo+'&search='+$(this).val())
+			).done(function(response) {
+				console.log(response);
+			}).fail(function(response) {
+				console.log(response);
+			});
+		});
 	});
 
 })(jQuery, OC);
