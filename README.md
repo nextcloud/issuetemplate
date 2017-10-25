@@ -55,3 +55,27 @@ or:
     phpunit -c phpunit.integration.xml
 
 for integration tests
+
+## Integration for app developers
+
+Apps will appear automatically in the issue template app once their appinfo.xml contains a `<bugs>` tag with an URL to the GitHub issue tracker.
+
+Adding custom details to your issue report:
+```
+$dispatcher = \OC::$server->getEventDispatcher();
+$dispatcher->addListener('\OCA\IssueTemplate::queryAppDetails', function(GenericEvent $event) {
+    if($event->getArgument('app') === 'deck') {
+        $manager = \OC::$server->query(\OCA\IssueTemplate\DetailManager::class);
+        $section = new \OCA\IssueTemplate\Section('server-config', 'Server configuration');
+        $section->createDetail('Operating system', php_uname());
+        $section->createDetail('PHP version', PHP_VERSION);
+        $manager->addSection($section);
+    }
+});
+```
+
+Sections provided by default can be disabled using `\OCA\IssueTemplate\DetailManager::removeSection($sectionName)` method. Currently the following 3 section names are provided by default:
+
+- server-detail
+- log-detail
+- client-detail

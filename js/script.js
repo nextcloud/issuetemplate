@@ -67,6 +67,11 @@ function getIssueText() {
 			checkLength();
 		});
 
+		$('#repository').change(function () {
+			var id = $(this).children('option:selected').data('id');
+			window.location.href = "?app=" + id;
+		});
+
 	});
 
 })(jQuery, OC);

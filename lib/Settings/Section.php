@@ -30,12 +30,12 @@ use OCP\Settings\IIconSection;
 class Section implements IIconSection {
 
 	/** @var IL10N */
-	private $l;
+	private $l10n;
 	/** @var IURLGenerator */
 	private $urlGenerator;
 
 	public function __construct(IL10N $l, IURLGenerator $urlGenerator) {
-		$this->l = $l;
+		$this->l10n = $l;
 		$this->urlGenerator = $urlGenerator;
 	}
 
@@ -44,7 +44,7 @@ class Section implements IIconSection {
 	}
 
 	public function getName() {
-		return $this->l->t('Issue reporting');
+		return $this->l10n->t('Issue reporting');
 	}
 	
 	public function getPriority() {
