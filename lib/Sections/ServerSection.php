@@ -90,7 +90,7 @@ Eventually replace sensitive data as the name/IP-address of your LDAP server or 
 		return \OC_Util::getHumanVersion() . ' - ' . $this->config->getSystemValue('version');
 	}
 	private function getOsVersion() {
-		return PHP_OS;
+		return function_exists('php_uname') ? php_uname('s') . ' ' . php_uname('r') . ' ' . php_uname('v') . ' ' . php_uname('m') : PHP_OS;
 	}
 	private function getPhpVersion() {
 		return PHP_VERSION . "\nModules loaded: " . implode(', ', get_loaded_extensions());
