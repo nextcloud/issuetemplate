@@ -7,7 +7,7 @@
     <author>Julius Härtl</author>
     <version>0.3.0</version>
     <namespace>IssueTemplate</namespace>
-    <category>tool</category>
+    <category>tools</category>
     <dependencies>
         <nextcloud min-version="12" max-version="13" />
     </dependencies>
