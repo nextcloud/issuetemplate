@@ -1,3 +1,12 @@
+## 0.3.0
+### Added
+- Allow apps to implement their own reports
+
+### Fixed
+- Making OS info more safe and robust
+- Use icon for settings section
+- Update link to repo shown under the form
+
 ## 0.2.2
 ### Fixed
 - Add android repo
