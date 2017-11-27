@@ -27,10 +27,6 @@ class DetailManager {
 
 	private $sections = [];
 
-	public function __construct($AppName) {
-		\OC::$server->getLogger()->error($AppName);
-	}
-
 	public function createSection($identifier, $title, $order=0) {
 		$section = new Section($identifier, $title, $order);
 		$this->addSection($section);
