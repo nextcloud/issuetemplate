@@ -69,6 +69,9 @@ class Section implements ISection {
 	 * @inheritdoc
 	 */
 	public function createDetail($title, $information, $type = IDetail::TYPE_SINGLE_LINE) {
+		if (!is_string($information)) {
+			$information = print_r($information, true);
+		}
 		$detail = new Detail($this->getIdentifier(), $title, $information, $type);
 		$this->addDetail($detail);
 		return $detail;
