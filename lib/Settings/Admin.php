@@ -105,7 +105,8 @@ class Admin implements ISettings {
 			'repos' => $this->getAppRepos(),
 			'app' => $app
 		];
-		\OC_Util::addScript('issuetemplate','script');
+		\OC_Util::addScript('issuetemplate','build/build');
+		\OC_Util::addStyle('issuetemplate','style');
 		\OC_Util::addStyle('issuetemplate','style');
 		return new TemplateResponse('issuetemplate', 'settings-admin', $parameters, '');
 	}

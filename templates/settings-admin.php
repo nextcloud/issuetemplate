@@ -1,45 +1,66 @@
-<?php
-?>
 <div id="issuetemplate" class="section">
 	<h2 class="inlineblock"><?php p($l->t('Issue reporting')); ?></h2>
-	<p>
-		<?php p($l->t("For reporting potential security issues please see")); ?> <a href="https://nextcloud.com/security/">https://nextcloud.com/security/</a>
-	</p>
-	<p><strong><?php p($l->t("Please always check if the automatically filled out information is correct and there is nothing important missing, before reporting the issue.")); ?></strong></p>
+	<div id="app">
+		<div>
 
+			<form-wizard @on-complete="onComplete"
+						 shape="tab"
+						 color="<?php p(\OC::$server->getThemingDefaults()->getColorPrimary()); ?>"
+						 error-color="#a94442">
+				<div slot="title"></div>
+				<tab-content title="Affected component"
+							 icon="icon-category-customization icon-invert"
+							 :before-change="validateAppSelect">
+					<issuetemplate-app-selector	v-bind:apps="apps"></issuetemplate-app-selector>
+				</tab-content>
 
-	<form method="GET" action="#">
+				<tab-content title="Issue description"
+							 icon="icon-user icon-invert"
+							 :before-change="validateFirstTab">
+
+					<vue-form-generator :model="model"
+										:schema="firstTabSchema"
+										:options="formOptions"
+										ref="firstTabForm">
+					</vue-form-generator>
+
+				</tab-content>
+				<tab-content title="Additional Info"
+							 icon="icon-settings icon-invert"
+							 :before-change="validateSecondTab">
+					<vue-form-generator :model="model"
+										:schema="secondTabSchema"
+										:options="formOptions"
+										ref="secondTabForm">
+					</vue-form-generator>
+
+				</tab-content>
+				<tab-content title="Log messages"
+							 icon="icon-category-organization icon-invert"
+							 :before-change="validateLogMessages">
+					[[ logreader ]]
+				</tab-content>
+				<tab-content title="Check issue report"
+							 icon="icon-checkmark icon-invert">
+					<h4>Check your bug report before submitting it</h4>
+					<div class="panel-body">
+						<p>
+							<strong><?php p($l->t("Please always check if the automatically filled out information is correct and there is nothing important missing, before reporting the issue.")); ?></strong>
+						</p>
+
+						<p>
+							<strong><?php p($l->t("This report will be submitted to nextcloud/server")); ?></strong>
+						</p>
+						<pre v-if="model" v-html="prettyJSON(model)"></pre>
+					</div>
+				</tab-content>
+			</form-wizard>
+		</div>
 		<p>
-			<label for="repository"><?php p($l->t("Affected component")); ?></label>
-			<select id="repository">
-				<?php foreach ($_['repos'] as $id => $info): ?>
-					<option value="<?php p($info['bugs']); ?>" <?php if($id === $_['app']) { p(' selected'); } ?> data-id="<?php p($id); ?>"><?php p($info['name']); ?></option>
-				<?php endforeach; ?>
-			</select>
-			<?php p($_['app']); ?>
+			<?php p($l->t("For reporting potential security issues please see")); ?>
+			<a href="https://nextcloud.com/security/">https://nextcloud.com/security/</a>
 		</p>
-		<p>
-			<input type="text" id="issue-title" placeholder="<?php p($l->t("Issue title")); ?>" />
-		</p>
-		<textarea id="issue-description">### Steps to reproduce
-1.
-2.
-3.
-
-### Expected behaviour
-Tell us what should happen
-
-### Actual behaviour
-Tell us what happens instead</textarea>
-		<h3>Server information details <input type="button" value="<?php p($l->t('Show')); ?>" id="toggle-details"/></h3>
-		<textarea id="issue-serverinfo"><?php p($_['issueTemplate']); ?></textarea>
-
-		<p id="status-text"> </p>
-
-		<input id="copyissue" type="button" value=" <?php p($l->t("Copy text to clipboard")); ?> " />
-		<input class="primary" type="submit" value=" <?php p($l->t("File a new issue on GitHub")); ?> " id="submit-issue" />
-
-	</form>
+	</div>
 
 </div>
 
