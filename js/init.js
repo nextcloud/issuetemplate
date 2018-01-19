@@ -24,7 +24,7 @@ import Vue from 'vue';
 import VueFormWizard from 'vue-form-wizard';
 import VueFormGenerator from 'vue-form-generator';
 import AppSelector from './components/appselector.vue';
-
+import DetailSection from './components/detailsection.vue';
 
 Vue.use(VueFormWizard)
 Vue.use(VueFormGenerator)
@@ -32,51 +32,33 @@ Vue.use(VueFormGenerator)
 new Vue({
 	el: '#app',
 	components: {
-		'issuetemplate-app-selector': AppSelector,
 		'app-selector': AppSelector,
-
+		'detail-section': DetailSection,
 	},
 	mounted: function () {
 		var self = this;
-
 		$.ajax({
-			url: OC.linkTo('issuetemplate', 'applist'),
+			url: OC.generateUrl('/apps/issuetemplate/components'),
 			method: 'GET',
 			success: function (data) {
+				console.log(data);
 				self.apps = data;
 			},
 			error: function (error) {
 				console.log(error);
-				self.apps = [
-					{
-						id: 'core',
-						title: 'Core components',
-						items: [
-							{
-								id: 'server',
-								title: 'Nextcloud server',
-								icon: OC.imagePath('core', 'logo'),
-								reportRepo: 'https://github.com/nextcloud/server'
-							},
-							{
-								id: 'android',
-								title: 'Nextcloud Android App',
-								icon: OC.imagePath('core', 'logo'),
-								reportRepo: 'https://github.com/nextcloud/server'
-							}
-						]
-					}
-				];
+				self.apps = [];
 			}
 		});
 	},
 	data: {
 		apps: {},
 		model:{
-			title:'',
-			stepsToReproduce:'',
-			expectedBehaviour:'',
-			actualBehaviour:'',
+			component: null,
+			title: '',
+			stepsToReproduce: '',
+			expectedBehaviour: '',
+			actualBehaviour: '',
+			details: {}
 		},
 		formOptions: {
 			validationErrorClass: "has-error",
@@ -110,52 +92,31 @@ new Vue({
 					model: "expectedBehaviour",
 					required: true,
 					validator: VueFormGenerator.validators.string,
-					styleClasses: 'col-sm-12'
+					styleClasses: 'col-sm-6'
+				},
+				{
+					type: "textArea",
+					inputType: "text",
+					label: "Actual behaviour",
+					model: "actualBehaviour",
+					required: true,
+					validator: VueFormGenerator.validators.string,
+					styleClasses: 'col-sm-6'
 				}
-			]
-		},
-		secondTabSchema:{
-			fields:[
-				{
-					type: "input",
-					inputType: "text",
-					label: "Street name",
-					model: "streetName",
-					required:true,
-					validator:VueFormGenerator.validators.string,
-					styleClasses:'col-xs-9'
-				},
-				{
-					type: "input",
-					inputType: "text",
-					label: "Street number",
-					model: "streetNumber",
-					required:true,
-					validator:VueFormGenerator.validators.string,
-					styleClasses:'col-xs-3'
-				},
-				{
-					type: "input",
-					inputType: "text",
-					label: "City",
-					model: "city",
-					required:true,
-					validator:VueFormGenerator.validators.string,
-					styleClasses:'col-xs-6'
-				},
-				{
-					type: "select",
-					label: "Country",
-					model: "country",
-					required:true,
-					validator:VueFormGenerator.validators.string,
-					values:['United Kingdom','Romania','Germany'],
-					styleClasses:'col-xs-6'
-				},
 			]
 		}
 	},
 	methods: {
+		getAppId: function () {
+			if (this.model.component !== null) {
+				return this.model.component.id;
+			}
+			return null;
+		},
+		selectComponent: function (component) {
+			this.model.component = component;
+			this.$refs.wizard.nextTab();
+		},
 		onComplete: function(){
 			alert('Yay. Done!');
 		},
@@ -166,7 +127,9 @@ new Vue({
 			return this.$refs.firstTabForm.validate();
 		},
 		validateSecondTab: function(){
-			return this.$refs.secondTabForm.validate();
+			console.log(this.$refs.details.model);
+			this.model.details = this.$refs.details.model;
+			return true;
 		},
 		validateLogMessages: function() {
 			// FIXME: validation

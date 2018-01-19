@@ -25,9 +25,9 @@
 		<h3>{{ item.title }}</h3>
 
 		<div class="affected-components">
-			<div class="affected-component" v-for="component in item.items" v-on:click="selected = component">
+			<div class="affected-component" v-for="component in item.items" v-on:click="selectComponent(component)">
 				<div class="logo"><img :src="component.icon" /></div>
-				<p>{{ component.title }}</p>
+				<p>{{ component.name }}</p>
 			</div>
 		</div>
 		</div>
@@ -36,13 +36,28 @@
 
 <script>
 	export default {
-		props: [
-			'app-data',
-			'apps',
-		],
+		methods: {
+			selectComponent: function(component) {
+				this.$emit('select', component);
+			}
+		},
+		mounted: function () {
+			var self = this;
+			$.ajax({
+				url: OC.generateUrl('/apps/issuetemplate/components'),
+				method: 'GET',
+				success: function (data) {
+					self.apps = data;
+				},
+				error: function (error) {
+					console.log(error);
+					self.apps = [];
+				}
+			});
+		},
 		data: function () {
 			return {
-				app: 'foos',
+				apps: {},
 				selected: this.selected,
 			}
 		}

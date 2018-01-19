@@ -6,34 +6,24 @@
 			<form-wizard @on-complete="onComplete"
 						 shape="tab"
 						 color="<?php p(\OC::$server->getThemingDefaults()->getColorPrimary()); ?>"
-						 error-color="#a94442">
+						 error-color="#a94442"
+						 ref="wizard">
 				<div slot="title"></div>
-				<tab-content title="Affected component"
-							 icon="icon-category-customization icon-invert"
-							 :before-change="validateAppSelect">
-					<issuetemplate-app-selector	v-bind:apps="apps"></issuetemplate-app-selector>
+				<tab-content title="Affected component" icon="icon-category-customization icon-invert" :before-change="validateAppSelect">
+					<app-selector v-on:select="selectComponent"></app-selector>
 				</tab-content>
 
-				<tab-content title="Issue description"
-							 icon="icon-user icon-invert"
-							 :before-change="validateFirstTab">
-
-					<vue-form-generator :model="model"
-										:schema="firstTabSchema"
-										:options="formOptions"
+				<tab-content title="Issue description" icon="icon-user icon-invert" :before-change="validateFirstTab">
+					<vue-form-generator :model="model" :schema="firstTabSchema" :options="formOptions"
 										ref="firstTabForm">
 					</vue-form-generator>
 
 				</tab-content>
 				<tab-content title="Additional Info"
+							 :v-if="model.component && model.component.appId"
 							 icon="icon-settings icon-invert"
 							 :before-change="validateSecondTab">
-					<vue-form-generator :model="model"
-										:schema="secondTabSchema"
-										:options="formOptions"
-										ref="secondTabForm">
-					</vue-form-generator>
-
+					<detail-section ref="details" :app="getAppId()"></detail-section>
 				</tab-content>
 				<tab-content title="Log messages"
 							 icon="icon-category-organization icon-invert"
@@ -55,13 +45,17 @@
 					</div>
 				</tab-content>
 			</form-wizard>
+
+			<pre v-if="model" v-html="prettyJSON(model)"></pre>
+
 		</div>
+
 		<p>
 			<?php p($l->t("For reporting potential security issues please see")); ?>
 			<a href="https://nextcloud.com/security/">https://nextcloud.com/security/</a>
 		</p>
-	</div>
 
+	</div>
 </div>
 
 

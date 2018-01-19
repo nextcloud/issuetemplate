@@ -20,45 +20,47 @@
   -
   -->
 <template>
-	<div id="app-selector">
-		<div v-for="(item, key) in apps">
-		<h3>{{ item.title }}</h3>
-
-		<div class="affected-components">
-			<div class="affected-component" v-for="component in item.items" v-on:click="selectComponent(component)">
-				<div class="logo"><img :src="component.icon" /></div>
-				<p>{{ component.name }}</p>
-			</div>
-		</div>
+	<div id="details">
+		<div class="details-section">
+			<vue-form-generator :schema="schema" :model="model" :options="formOptions"></vue-form-generator>
 		</div>
 	</div>
 </template>
 
 <script>
 	export default {
-		methods: {
-			selectComponent: function(component) {
-				this.$emit('select', component);
+		props: {
+			app: String,
+		},
+		watch: {
+			app: function(value, oldValue) {
+				if (typeof value !== 'undefined') {
+					this.updateDetails();
+				}
 			}
 		},
-		mounted: function () {
-			var self = this;
-			$.ajax({
-				url: OC.generateUrl('/apps/issuetemplate/components'),
-				method: 'GET',
-				success: function (data) {
-					self.apps = data;
-				},
-				error: function (error) {
-					console.log(error);
-					self.apps = [];
-				}
-			});
+		methods: {
+			updateDetails: function () {
+				var self = this;
+				$.ajax({
+					url: OC.generateUrl('/apps/issuetemplate/details/' + this.app),
+					method: 'GET',
+					success: function (data) {
+						console.log(data);
+						self.model = data.model;
+						self.schema = data.schema;
+					},
+					error: function (error) {
+						console.log(error);
+						self.apps = [];
+					}
+				});
+			}
 		},
 		data: function () {
 			return {
-				apps: {},
-				selected: this.selected,
+				model: {},
+				schema: {},
 			}
 		}
 	}
