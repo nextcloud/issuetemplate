@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright Copyright (c) 2017 Julius Härtl <jus@bitgrid.net>
+ * @copyright Copyright (c) 2018 Julius Härtl <jus@bitgrid.net>
  *
  * @author Julius Härtl <jus@bitgrid.net>
  *
@@ -21,42 +21,9 @@
  *
  */
 
-namespace OCA\IssueTemplate;
-
-/**
- * Interface ISection
- *
- * @package OCA\IssueTemplate
- */
-interface ISection {
-
-	/**
-	 * Returns a unique identifier for the section
-	 *
-	 * Predefined sections are server, client and log
-	 * @return string
-	 */
-	public function getIdentifier();
-
-	/**
-	 * Returns a human readable title for the section
-	 *
-	 * @return string
-	 */
-	public function getTitle();
-
-	/**
-	 * Adds a detail entry to a section
-	 *
-	 * @param IDetail $details
-	 * @return void
-	 */
-	public function addDetail(IDetail $details);
-
-	/**
-	 * Get all details contained in the section
-	 *
-	 * @return IDetail[]
-	 */
-	public function getDetails();
-}
+return [
+	'routes' => [
+		['name' => 'API#components', 'url' => '/components', 'verb' => 'GET'],
+		['name' => 'API#details', 'url' => '/details/{app}', 'verb' => 'GET']
+	],
+];

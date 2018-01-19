@@ -55,6 +55,9 @@ class DetailManager {
 	 * @param int $type
 	 */
 	public function createDetail($sectionIdentifier, $title, $information, $type = IDetail::TYPE_MULTI_LINE_PREFORMAT) {
+		if (!is_string($information)) {
+			$information = print_r($information, true);
+		}
 		$detail = new Detail($sectionIdentifier, $title, $information, $type);
 		/** @var ISection $sectionObject */
 		$sectionObject = $this->sections[$sectionIdentifier];

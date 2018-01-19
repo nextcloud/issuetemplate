@@ -26,12 +26,17 @@ namespace OCA\IssueTemplate;
 class Detail implements IDetail {
 
 	private $section;
+	private $identifier;
 	private $title;
 	private $information;
 	private $type;
 
-	public function __construct($section, $title, $information, $type) {
+	public function __construct($section, $title, $information, $type, $identifier = '') {
 		$this->section = $section;
+		$this->identifier = $identifier;
+		if ($identifier === '') {
+			$this->identifier = md5($title);
+		}
 		$this->title = $title;
 		$this->information = $information;
 		$this->type = $type;
@@ -51,5 +56,9 @@ class Detail implements IDetail {
 
 	public function getSection() {
 		return $this->section;
+	}
+
+	public function getIdentifier() {
+		return $this->identifier;
 	}
 }

@@ -31,21 +31,37 @@ interface IDetail {
 	const TYPE_COLLAPSIBLE_PREFORMAT = 4;
 
 	/**
+	 * Returns a unique identifier for the detail value
+	 *
+	 * @return string
+	 */
+	public function getIdentifier();
+
+	/**
+	 * Returns the human readable title of the detail value
+	 *
 	 * @return string
 	 */
 	public function getTitle();
+
 	/**
-	 * @return string
+	 * Returns the type of the detail field
+	 *
+	 * @return int
 	 */
 	public function getType();
 
 	/**
+	 * Returns the value that should be presented in the issue report
+	 *
 	 * @return string
 	 */
 	public function getInformation();
 
 	/**
-	 * @return int
+	 * Return the parent section that the detail is linked to
+	 *
+	 * @return ISection
 	 */
 	public function getSection();
 }
