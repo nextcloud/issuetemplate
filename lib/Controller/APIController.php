@@ -75,31 +75,42 @@ class APIController extends Controller {
 		$this->eventDispatcher->dispatch('\OCA\IssueTemplate::requestInformation', $event);
 	}
 
-	public function details($app) {
+	public function sections($app) {
+		$this->queryAppDetails($app);
+
+		$sections = [];
+
+		/** @var ISection $section */
+		foreach ($this->detailManager->getSections() as $section) {
+			$sections[] = $section;
+		}
+		return $sections;
+	}
+
+	public function details($app, $sectionIdentifier) {
 		$this->queryAppDetails($app);
 
 		$model = [];
 		$schema = [];
 
-		$sections = $this->detailManager->getSections();
-		/** @var ISection $section */
-		foreach ($sections as $section) {
-			$model[$section->getIdentifier()] = [];
-			$group = [
-				'legend' => $section->getTitle(),
-				'fields' => []
+		$section = $this->detailManager->getSection($sectionIdentifier);
+
+		$model[$section->getIdentifier()] = [];
+		$group = [
+			'legend' => $section->getTitle(),
+			'fields' => []
+		];
+		/** @var IDetail $detail */
+		foreach ($section->getDetails() as $detail) {
+			$model[$section->getIdentifier()][$detail->getIdentifier()] = $detail->getInformation();
+			$group['fields'][] = [
+				'type' => $this->getTypeFieldSchema($detail->getType()),
+				'label' => $detail->getTitle(),
+				'model' => $section->getIdentifier() . '.' . $detail->getIdentifier()
 			];
-			/** @var IDetail $detail */
-			foreach ($section->getDetails() as $detail) {
-				$model[$section->getIdentifier()][$detail->getIdentifier()] = $detail->getInformation();
-				$group['fields'][] = [
-					'type' => $this->getTypeFieldSchema($detail->getType()),
-					'label' => $detail->getTitle(),
-					'model' => $section->getIdentifier() . '.' . $detail->getIdentifier()
-				];
-			}
-			$schema['groups'][] = $group;
 		}
+		$schema['groups'][] = $group;
+
 		return [
 			'model' => $model,
 			'schema' => $schema

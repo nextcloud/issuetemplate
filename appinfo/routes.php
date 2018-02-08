@@ -24,6 +24,7 @@
 return [
 	'routes' => [
 		['name' => 'API#components', 'url' => '/components', 'verb' => 'GET'],
-		['name' => 'API#details', 'url' => '/details/{app}', 'verb' => 'GET']
+		['name' => 'API#sections', 'url' => '/sections/{app}', 'verb' => 'GET'],
+		['name' => 'API#details', 'url' => '/details/{app}/{sectionIdentifier}', 'verb' => 'GET']
 	],
 ];

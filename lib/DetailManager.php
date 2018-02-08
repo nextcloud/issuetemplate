@@ -71,6 +71,13 @@ class DetailManager {
 		return $this->sections;
 	}
 
+	/**
+	 * @return ISection
+	 */
+	public function getSection($identifier) {
+		return $this->sections[$identifier];
+	}
+
 	public function getRenderedDetails() {
 		$result = '';
 		/** @var ISection $section */
