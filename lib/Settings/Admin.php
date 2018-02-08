@@ -60,7 +60,6 @@ class Admin implements ISettings {
 	public function getForm() {
 		\OC_Util::addScript('issuetemplate','build/build');
 		\OC_Util::addStyle('issuetemplate','style');
-		\OC_Util::addStyle('issuetemplate','style');
 		return new TemplateResponse('issuetemplate', 'settings-admin', [], '');
 	}
 
