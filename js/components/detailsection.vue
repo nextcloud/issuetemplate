@@ -22,7 +22,7 @@
 <template>
 	<div id="details">
 		<div class="details-section">
-			<vue-form-generator :schema="schema" :model="model" :options="formOptions"></vue-form-generator>
+			<vue-form-generator :schema="schema" :model="model" :options="formOptions" @validated="onValidated"></vue-form-generator>
 		</div>
 	</div>
 </template>
@@ -31,6 +31,10 @@
 	export default {
 		props: {
 			app: String,
+			section: String,
+		},
+		mounted: function () {
+			this.updateDetails();
 		},
 		watch: {
 			app: function(value, oldValue) {
@@ -43,10 +47,9 @@
 			updateDetails: function () {
 				var self = this;
 				$.ajax({
-					url: OC.generateUrl('/apps/issuetemplate/details/' + this.app),
+					url: OC.generateUrl('/apps/issuetemplate/details/' + this.app + '/' + this.section),
 					method: 'GET',
 					success: function (data) {
-						console.log(data);
 						self.model = data.model;
 						self.schema = data.schema;
 					},
@@ -55,12 +58,27 @@
 						self.apps = [];
 					}
 				});
+			},
+			onValidated(isValid, errors) {
+				this.isValid = !isValid;
+			},
+			fetchUpdates: function() {
+				if (this.isValid) {
+					return this.model;
+				} else {
+					return false;
+				}
 			}
 		},
 		data: function () {
 			return {
-				model: {},
+				isValid: false,
 				schema: {},
+				model: {},
+				formOptions: {
+					validateAfterChanged: true,
+					validateAfterLoad: true,
+				}
 			}
 		}
 	}

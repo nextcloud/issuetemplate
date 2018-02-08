@@ -30,23 +30,17 @@ Vue.use(VueFormWizard)
 Vue.use(VueFormGenerator)
 
 new Vue({
-	el: '#app',
+	el: '#issuetemplate',
 	components: {
 		'app-selector': AppSelector,
 		'detail-section': DetailSection,
 	},
 	mounted: function () {
+		this.resetWizard();
 	},
 	data: {
-		apps: {},
-		model:{
-			component: null,
-			title: '',
-			stepsToReproduce: '',
-			expectedBehaviour: '',
-			actualBehaviour: '',
-			details: {}
-		},
+		tabs: [],
+		model: {},
 		formOptions: {
 			validationErrorClass: "has-error",
 			validationSuccessClass: "has-success",
@@ -59,7 +53,7 @@ new Vue({
 					inputType: "text",
 					label: "Issue title",
 					model: "title",
-					required: true,
+					//required: true,
 					validator: VueFormGenerator.validators.string,
 					styleClasses: 'col-sm-12'
 				},
@@ -96,14 +90,15 @@ new Vue({
 	methods: {
 		updateSections: function () {
 			var self = this;
+			self.tabs = [];
 			$.ajax({
 				url: OC.generateUrl('/apps/issuetemplate/sections/' + this.app),
 				method: 'GET',
 				success: function (data) {
-					self.sections = data;
+					self.tabs = data;
 				},
 				error: function (error) {
-					self.sections = [];
+					self.tabs = [];
 				}
 			});
 		},
@@ -115,14 +110,22 @@ new Vue({
 		},
 		selectComponent: function (component) {
 			this.model.component = component;
+			this.updateSections();
 			this.$refs.wizard.nextTab();
-			this.tabs = [
-				{title: 'foo'},
-				{title: 'foobar'},
-			]
 		},
 		onComplete: function(){
 			alert('Yay. Done!');
+			this.resetWizard();
+		},
+		resetWizard: function() {
+			this.model = {
+				component: null,
+				title: '',
+				stepsToReproduce: '',
+				expectedBehaviour: '',
+				actualBehaviour: '',
+				details: {}
+			};
 		},
 		validateAppSelect: function() {
 			return this.getAppId() !== null;
@@ -130,12 +133,12 @@ new Vue({
 		validateIssueDescription: function(){
 			return this.$refs.firstTabForm.validate();
 		},
-		validateDetails: function(){
-			this.model.details = this.$refs.details.model;
-			return true;
-		},
-		validateLogMessages: function() {
-			// FIXME: validation
+		validateDetails: function(tab){
+			var updates = this.$refs[tab.identifier][0].fetchUpdates();
+			if (updates === false) {
+				return false;
+			}
+			this.model.details[tab.identifier] = updates[tab.identifier];
 			return true;
 		},
 		prettyJSON: function(json) {
