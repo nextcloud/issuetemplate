@@ -36,19 +36,6 @@ new Vue({
 		'detail-section': DetailSection,
 	},
 	mounted: function () {
-		var self = this;
-		$.ajax({
-			url: OC.generateUrl('/apps/issuetemplate/components'),
-			method: 'GET',
-			success: function (data) {
-				console.log(data);
-				self.apps = data;
-			},
-			error: function (error) {
-				console.log(error);
-				self.apps = [];
-			}
-		});
 	},
 	data: {
 		apps: {},
@@ -107,6 +94,19 @@ new Vue({
 		}
 	},
 	methods: {
+		updateSections: function () {
+			var self = this;
+			$.ajax({
+				url: OC.generateUrl('/apps/issuetemplate/sections/' + this.app),
+				method: 'GET',
+				success: function (data) {
+					self.sections = data;
+				},
+				error: function (error) {
+					self.sections = [];
+				}
+			});
+		},
 		getAppId: function () {
 			if (this.model.component !== null) {
 				return this.model.component.id;
@@ -116,18 +116,21 @@ new Vue({
 		selectComponent: function (component) {
 			this.model.component = component;
 			this.$refs.wizard.nextTab();
+			this.tabs = [
+				{title: 'foo'},
+				{title: 'foobar'},
+			]
 		},
 		onComplete: function(){
 			alert('Yay. Done!');
 		},
 		validateAppSelect: function() {
-			return true;
+			return this.getAppId() !== null;
 		},
-		validateFirstTab: function(){
+		validateIssueDescription: function(){
 			return this.$refs.firstTabForm.validate();
 		},
-		validateSecondTab: function(){
-			console.log(this.$refs.details.model);
+		validateDetails: function(){
 			this.model.details = this.$refs.details.model;
 			return true;
 		},

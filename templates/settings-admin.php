@@ -9,15 +9,18 @@
 						 error-color="#a94442"
 						 ref="wizard">
 				<div slot="title"></div>
+
+
 				<tab-content title="Affected component" icon="icon-category-customization icon-invert" :before-change="validateAppSelect">
 					<app-selector v-on:select="selectComponent"></app-selector>
 				</tab-content>
 
-				<tab-content title="Issue description" icon="icon-user icon-invert" :before-change="validateFirstTab">
-					<vue-form-generator :model="model" :schema="firstTabSchema" :options="formOptions"
-										ref="firstTabForm">
-					</vue-form-generator>
+				<tab-content title="Issue description" icon="icon-user icon-invert" :before-change="validateIssueDescription">
+					<vue-form-generator :model="model" :schema="firstTabSchema" :options="formOptions" ref="firstTabForm"></vue-form-generator>
+				</tab-content>
 
+				<tab-content title="Additional Info" icon="icon-settings icon-invert" :before-change="validateDetails">
+					<detail-section ref="details" :app="getAppId()"></detail-section>
 				</tab-content>
 				<tab-content title="Additional Info"
 							 :v-if="model.component && model.component.appId"
@@ -30,8 +33,8 @@
 							 :before-change="validateLogMessages">
 					[[ logreader ]]
 				</tab-content>
-				<tab-content title="Check issue report"
-							 icon="icon-checkmark icon-invert">
+
+				<tab-content title="Check issue report" icon="icon-checkmark icon-invert">
 					<h4>Check your bug report before submitting it</h4>
 					<div class="panel-body">
 						<p>
