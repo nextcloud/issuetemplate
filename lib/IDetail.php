@@ -29,6 +29,7 @@ interface IDetail {
 	const TYPE_MULTI_LINE_PREFORMAT = 2;
 	const TYPE_COLLAPSIBLE = 3;
 	const TYPE_COLLAPSIBLE_PREFORMAT = 4;
+	const TYPE_BOOLEAN = 5;
 
 	/**
 	 * Returns a unique identifier for the detail value

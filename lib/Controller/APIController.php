@@ -111,6 +111,9 @@ class APIController extends Controller {
 			case IDetail::TYPE_SINGLE_LINE:
 				return 'input';
 				break;
+			case IDetail::TYPE_BOOLEAN:
+				return 'checkbox';
+				break;
 			default:
 				return 'textArea';
 				break;

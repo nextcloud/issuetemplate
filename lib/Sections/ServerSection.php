@@ -58,7 +58,7 @@ class ServerSection extends Section {
 		$this->createDetail('Operating system', $this->getOsVersion());
 		$this->createDetail('Webserver', $this->getWebserver());
 		$this->createDetail('Database', $this->getDatabaseInfo());
-		$this->createDetail('PHP version', $this->getPhpVersion());
+		$this->createDetail('PHP version', $this->getPhpVersion(), IDetail::TYPE_MULTI_LINE);
 		$this->createDetail('Nextcloud version', $this->getNextcloudVersion());
 		$this->createDetail('Updated from an older Nextcloud/ownCloud or fresh install', '');
 		$this->createDetail('Where did you install Nextcloud from', $this->getInstallMethod());
@@ -68,19 +68,16 @@ class ServerSection extends Section {
 		$this->createDetail('Configuration (config/config.php)', print_r(json_encode($this->getConfig(), JSON_PRETTY_PRINT), true), IDetail::TYPE_COLLAPSIBLE_PREFORMAT);
 
 		$this->createDetail('Are you using external storage, if yes which one', 'local/smb/sftp/...');
-		$this->createDetail('Are you using encryption', $this->getEncryptionInfo());
+		$this->createDetail('Are you using encryption', $this->getEncryptionInfo() === 'yes' ? true : false, IDetail::TYPE_BOOLEAN);
 		$this->createDetail('Are you using an external user-backend, if yes which one', 'LDAP/ActiveDirectory/Webdav/...');
 
-		$this->createDetail('LDAP configuration (delete this part if not used)', 'With access to your command line run e.g.:
-sudo -u www-data php occ ldap:show-config
-from within your Nextcloud installation folder
-
-Without access to your command line download the data/owncloud.db to your local
-computer or access your SQL server remotely and run the select query:
-SELECT * FROM `oc_appconfig` WHERE `appid` = \'user_ldap\';
-
-
-Eventually replace sensitive data as the name/IP-address of your LDAP server or groups.', IDetail::TYPE_COLLAPSIBLE_PREFORMAT);
+		if($this->appManager->isEnabledForUser('user_ldap')) {
+			$ldap = '';
+			foreach ($this->config->getAppKeys('user_ldap') as $key) {
+				$ldap .= $key . ': ' . $this->config->getAppValue('user_ldap', $key);
+			}
+			$this->createDetail('LDAP configuration (delete this par if not used)', $ldap, IDetail::TYPE_COLLAPSIBLE_PREFORMAT);
+		}
 	}
 	private function getWebserver() {
 		if (isset($_SERVER['SERVER_SOFTWARE']) && !empty($_SERVER['SERVER_SOFTWARE'])) {

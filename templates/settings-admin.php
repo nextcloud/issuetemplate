@@ -46,6 +46,7 @@
 				</tab-content>
 			</form-wizard>
 
+			<h3>Debug output</h3>
 			<pre v-if="model" v-html="prettyJSON(model)"></pre>
 
 		</div>
