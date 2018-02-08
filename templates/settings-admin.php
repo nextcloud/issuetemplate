@@ -8,7 +8,15 @@
 						 error-color="#a94442"
 						 ref="wizard">
 				<div slot="title"></div>
-
+				<div v-if="model.component" class="wizard-card-footer clearfix">
+					<div class="wizard-footer-left">
+						<wizard-button v-if="$refs.wizard.activeTabIndex > 0 && !$refs.wizard.isLastStep" @click.native="$refs.wizard.prevTab()" :style="$refs.wizard.fillButtonStyle">Previous</wizard-button>
+					</div>
+					<div class="wizard-footer-right">
+						<wizard-button v-if="!$refs.wizard.isLastStep"@click.native="$refs.wizard.nextTab()" class="wizard-footer-right" :style="$refs.wizard.fillButtonStyle">Next</wizard-button>
+						<wizard-button v-else @click.native="onComplete" class="wizard-footer-right finish-button" :style="$refs.wizard.fillButtonStyle">  {{$refs.wizard.isLastStep ? 'Finish' : 'Next'}}</wizard-button>
+					</div>
+				</div>
 
 				<tab-content title="Affected component" icon="icon-category-customization icon-invert" :before-change="validateAppSelect">
 					<app-selector v-on:select="selectComponent"></app-selector>
