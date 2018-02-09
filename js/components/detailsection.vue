@@ -22,7 +22,7 @@
 <template>
 	<div id="details">
 		<div class="details-section">
-			<vue-form-generator :schema="schema" :model="model" :options="formOptions" @validated="onValidated"></vue-form-generator>
+			<vue-form-generator :schema="schema" :model="model" :options="formOptions" @validated="onValidated" />
 		</div>
 	</div>
 </template>
@@ -45,7 +45,7 @@
 		},
 		methods: {
 			updateDetails: function () {
-				var self = this;
+				let self = this;
 				$.ajax({
 					url: OC.generateUrl('/apps/issuetemplate/details/' + this.app + '/' + this.section),
 					method: 'GET',
@@ -60,7 +60,7 @@
 				});
 			},
 			onValidated(isValid, errors) {
-				this.isValid = !isValid;
+				this.isValid = isValid;
 			},
 			fetchUpdates: function() {
 				if (this.isValid) {

@@ -21,7 +21,7 @@
   -->
 <template>
 	<div id="app-selector">
-		<div v-for="(item, key) in apps">
+		<div v-for="item in apps">
 		<h3>{{ item.title }}</h3>
 
 		<div class="affected-components">
@@ -42,7 +42,7 @@
 			}
 		},
 		mounted: function () {
-			var self = this;
+			let self = this;
 			$.ajax({
 				url: OC.generateUrl('/apps/issuetemplate/components'),
 				method: 'GET',
