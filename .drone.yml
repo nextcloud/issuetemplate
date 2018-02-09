@@ -97,7 +97,7 @@ pipeline:
     image: nextcloudci/php7.0:php7.0-19
     environment:
       - APP_NAME=issuetemplate
-      - CORE_BRANCH=stable13
+      - CORE_BRANCH=master
       - DB=sqlite
     commands:
       # Pre-setup steps
@@ -115,7 +115,7 @@ pipeline:
     image: nextcloudci/php7.1:php7.1-16
     environment:
       - APP_NAME=issuetemplate
-      - CORE_BRANCH=stable13
+      - CORE_BRANCH=master
       - DB=sqlite
     commands:
       # Pre-setup steps
@@ -132,7 +132,7 @@ pipeline:
     image: nextcloudci/php7.2:php7.2-11
     environment:
       - APP_NAME=issuetemplate
-      - CORE_BRANCH=stable13
+      - CORE_BRANCH=master
       - DB=sqlite
     commands:
       # Pre-setup steps
