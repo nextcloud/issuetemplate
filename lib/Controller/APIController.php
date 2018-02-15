@@ -127,7 +127,10 @@ class APIController extends Controller {
 	public function render() {
 		$markdown = $this->detailManager->getRenderedDetails();
 		$parser = new Parsedown();
-		return $parser->text($markdown);
+		return [
+			'markdown' => $markdown,
+			'rendered' => $parser->text($markdown)
+		];
 	}
 
 }

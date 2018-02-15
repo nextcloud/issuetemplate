@@ -25,9 +25,11 @@ import VueFormWizard from 'vue-form-wizard';
 import VueFormGenerator from 'vue-form-generator';
 import AppSelector from './components/appselector.vue';
 import DetailSection from './components/detailsection.vue';
+import VueClipboard from 'vue-clipboard2';
 
-Vue.use(VueFormWizard)
-Vue.use(VueFormGenerator)
+Vue.use(VueFormWizard);
+Vue.use(VueFormGenerator);
+Vue.use(VueClipboard);
 
 new Vue({
 	el: '#issuetemplate',
@@ -41,7 +43,7 @@ new Vue({
 	data: {
 		tabs: [],
 		model: {},
-		preview: 'preview',
+		preview: {},
 		formOptions: {
 			validationErrorClass: "has-error",
 			validationSuccessClass: "has-success",
@@ -151,26 +153,9 @@ new Vue({
 			});
 			return true;
 		},
-		prettyJSON: function(json) {
-			if (json) {
-				json = JSON.stringify(json, undefined, 4);
-				json = json.replace(/&/g, '&').replace(/</g, '<').replace(/>/g, '>');
-				return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function(match) {
-					var cls = 'number';
-					if (/^"/.test(match)) {
-						if (/:$/.test(match)) {
-							cls = 'key';
-						} else {
-							cls = 'string';
-						}
-					} else if (/true|false/.test(match)) {
-						cls = 'boolean';
-					} else if (/null/.test(match)) {
-						cls = 'null';
-					}
-					return '<span class="' + cls + '">' + match + '</span>';
-				});
-			}
+		openIssue: function() {
+			var urlComplete = this.model.component.bugs + "/new/?title=" + encodeURIComponent(this.model.title) + "&body=" + encodeURIComponent(this.preview.markdown);
+			window.open(urlComplete);
 		}
 	}
-})
+});

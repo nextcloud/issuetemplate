@@ -55,26 +55,12 @@ class ComponentService {
 	public function getComponents() {
 		$apps = \OC_App::getAllApps();
 		$serverComponents = array(
-			$this->getComponent('server', $this->l10n->t('Nextcloud server'), 'https://github.com/nextcloud/server'),
-			$this->getComponent('client', $this->l10n->t('Nextcloud desktop client'), 'https://github.com/nextcloud/client'),
-			$this->getComponent('android', $this->l10n->t('Nextcloud Android app'), 'https://github.com/nextcloud/android'),
-			$this->getComponent('ios', $this->l10n->t('Nextcloud iOS app'), 'https://github.com/nextcloud/ios')
+			$this->getComponent('server', $this->l10n->t('Nextcloud server'), 'https://github.com/nextcloud/server/issues'),
+			$this->getComponent('client', $this->l10n->t('Nextcloud desktop client'), 'https://github.com/nextcloud/client/issues'),
+			$this->getComponent('android', $this->l10n->t('Nextcloud Android app'), 'https://github.com/nextcloud/android/issues'),
+			$this->getComponent('ios', $this->l10n->t('Nextcloud iOS app'), 'https://github.com/nextcloud/ios/issues')
 		);
 		$appComponents = [];
-		$externalComponents = [
-			'desktop' => [
-				'name' => $this->l10n->t('Nextcloud Android app repository'),
-				'bugs' => 'https://github.com/nextcloud/android/issues'
-			],
-			'android' => [
-				'name' => $this->l10n->t('Nextcloud Android app repository'),
-				'bugs' => 'https://github.com/nextcloud/android/issues'
-			],
-			'ios' => [
-				'name' => $this->l10n->t('Nextcloud iOS app repository'),
-				'bugs' => 'https://github.com/nextcloud/ios/issues'
-			]
-		];
 		foreach ($apps as $app) {
 			if ($this->appManager->isInstalled($app)) {
 				$appinfo = \OC_App::getAppInfo($app);
@@ -106,7 +92,6 @@ class ComponentService {
 		return [
 			$this->getComponentSection('core', 'Nextcloud server', $serverComponents),
 			$this->getComponentSection('apps', 'Nextcloud apps', $appComponents),
-
 		];
 	}
 
