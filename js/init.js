@@ -41,6 +41,7 @@ new Vue({
 	data: {
 		tabs: [],
 		model: {},
+		preview: 'preview',
 		formOptions: {
 			validationErrorClass: "has-error",
 			validationSuccessClass: "has-success",
@@ -134,11 +135,20 @@ new Vue({
 			return this.$refs.firstTabForm.validate();
 		},
 		validateDetails: function(tab){
+			var self = this;
 			var updates = this.$refs[tab.identifier][0].fetchUpdates();
 			if (updates === false) {
 				return false;
 			}
 			this.model.details[tab.identifier] = updates[tab.identifier];
+			$.ajax({
+				url: OC.generateUrl('/apps/issuetemplate/render'),
+				data: this.model,
+				method: 'POST',
+				success: function (data) {
+					self.preview = data;
+				}
+			});
 			return true;
 		},
 		prettyJSON: function(json) {

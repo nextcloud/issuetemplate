@@ -21,15 +21,7 @@
  *
  */
 
-/**
- * Created by PhpStorm.
- * User: jus
- * Date: 19.01.18
- * Time: 21:44
- */
-
 namespace OCA\IssueTemplate\Controller;
-
 
 use OCA\IssueTemplate\DetailManager;
 use OCA\IssueTemplate\IDetail;
@@ -42,6 +34,7 @@ use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http\JSONResponse;
 use OCP\AppFramework\QueryException;
 use OCP\IRequest;
+use Parsedown;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -129,6 +122,12 @@ class APIController extends Controller {
 				return 'textArea';
 				break;
 		}
+	}
+
+	public function render() {
+		$markdown = $this->detailManager->getRenderedDetails();
+		$parser = new Parsedown();
+		return $parser->text($markdown);
 	}
 
 }

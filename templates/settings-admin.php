@@ -40,6 +40,10 @@
 						<p>
 							<strong><?php p($l->t("This report will be submitted to nextcloud/server")); ?></strong>
 						</p>
+
+						<div v-html="preview">
+
+						</div>
 					</div>
 				</tab-content>
 
