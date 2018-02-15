@@ -83,8 +83,7 @@ pipeline:
       - cd ../server/
       - ./occ app:enable $APP_NAME
       - cd apps/$APP_NAME
-      - phpunit -c phpunit.xml --coverage-clover build/php-unit.coverage.xml
-      - phpunit -c phpunit.integration.xml --coverage-clover build/php-integration.coverage.xml
+      - make test
 
       # Create coverage report
       - wget https://codecov.io/bash -O codecov.sh
@@ -97,7 +96,7 @@ pipeline:
     image: nextcloudci/php7.0:php7.0-19
     environment:
       - APP_NAME=issuetemplate
-      - CORE_BRANCH=master
+      - CORE_BRANCH=stable13
       - DB=sqlite
     commands:
       # Pre-setup steps
@@ -115,7 +114,7 @@ pipeline:
     image: nextcloudci/php7.1:php7.1-16
     environment:
       - APP_NAME=issuetemplate
-      - CORE_BRANCH=master
+      - CORE_BRANCH=stable13
       - DB=sqlite
     commands:
       # Pre-setup steps
@@ -132,7 +131,7 @@ pipeline:
     image: nextcloudci/php7.2:php7.2-11
     environment:
       - APP_NAME=issuetemplate
-      - CORE_BRANCH=master
+      - CORE_BRANCH=stable13
       - DB=sqlite
     commands:
       # Pre-setup steps
