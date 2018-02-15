@@ -10,7 +10,7 @@
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack --progress --hot --config js/webpack.config.js --watch",
     "build": "cross-env NODE_ENV=production webpack --progress --hide-modules --config js/webpack.config.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 0"
   },
   "repository": {
     "type": "git",
