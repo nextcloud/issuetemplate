@@ -61,7 +61,7 @@ class ClientSection extends Section {
 				$browserString .= $browser['plattform'] . ' ';
 			}
 		}
-		if(empty($browserString)) {
+		if(isset($_SERVER['HTTP_USER_AGENT']) && empty($browserString)) {
 			return $_SERVER['HTTP_USER_AGENT'];
 		}
 		return $browserString;
