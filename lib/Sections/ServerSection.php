@@ -83,7 +83,11 @@ SELECT * FROM `oc_appconfig` WHERE `appid` = \'user_ldap\';
 Eventually replace sensitive data as the name/IP-address of your LDAP server or groups.', IDetail::TYPE_COLLAPSIBLE_PREFORMAT);
 	}
 	private function getWebserver() {
-		return $_SERVER['SERVER_SOFTWARE'] . ' (' . PHP_SAPI . ')';
+		if (isset($_SERVER['SERVER_SOFTWARE']) && !empty($_SERVER['SERVER_SOFTWARE'])) {
+			return $_SERVER['SERVER_SOFTWARE'] . ' (' . PHP_SAPI . ')';
+		} else {
+			return 'Unknown' . ' (' . PHP_SAPI . ')';
+		}
 	}
 
 	private function getNextcloudVersion() {
