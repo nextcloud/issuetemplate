@@ -117,7 +117,6 @@ new Vue({
 			this.$refs.wizard.nextTab();
 		},
 		onComplete: function(){
-			alert('Yay. Done!');
 			this.resetWizard();
 		},
 		resetWizard: function() {
