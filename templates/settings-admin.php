@@ -42,7 +42,7 @@
 						<div id="preview" v-html="preview.rendered">
 
 						</div>
-						<textarea id="preview" v-html="preview.markdown">
+						<textarea id="preview" v-model="preview.markdown">
 
 						</textarea>
 					</div>

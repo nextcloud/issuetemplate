@@ -130,7 +130,19 @@ class APIController extends Controller {
 	}
 
 	public function render() {
-		$markdown = $this->detailManager->getRenderedDetails();
+		$markdown = '### Steps to reproduce
+' . $this->request->getParam('stepsToReproduce') . '
+
+
+### Expected behaviour
+' . $this->request->getParam('expectedBehaviour') . '
+
+### Actual behaviour
+' . $this->request->getParam('actualBehaviour') . '
+
+
+';
+		$markdown .= $this->detailManager->getRenderedDetails();
 		$parser = new Parsedown();
 		return [
 			'markdown' => $markdown,

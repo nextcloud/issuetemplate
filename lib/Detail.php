@@ -23,6 +23,8 @@
 
 namespace OCA\IssueTemplate;
 
+use OCP\IRequest;
+
 class Detail implements IDetail {
 
 	private $section;
@@ -51,6 +53,11 @@ class Detail implements IDetail {
 	}
 
 	public function getInformation() {
+		/** @var IRequest $request */
+		$request = \OC::$server->query(IRequest::class);
+		if ($request->getParam('details')) {
+			return $request->getParam('details')[$this->getSection()][$this->getIdentifier()];
+		}
 		return $this->information;
 	}
 
