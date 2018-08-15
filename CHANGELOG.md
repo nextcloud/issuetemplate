@@ -1,3 +1,10 @@
+## 0.4.0
+### Added
+- New wizard UI to prepare bug reports
+
+### Fixed
+- Fix issues with server and browser details
+
 ## 0.3.0
 ### Added
 - Allow apps to implement their own reports
