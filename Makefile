@@ -157,12 +157,6 @@ appstore:
 # from the internet
 .PHONY: test
 test:
-ifneq (,$(wildcard $(CURDIR)/js/package.json))
-	cd js && $(npm) run test
-endif
-ifneq (,$(wildcard $(CURDIR)/package.json))
-	$(npm) run test
-endif
 ifeq (, $(shell which phpunit 2> /dev/null))
 	@echo "No phpunit command available, downloading a copy from the web"
 	mkdir -p $(build_tools_directory)
