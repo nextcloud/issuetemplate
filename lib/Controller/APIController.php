@@ -96,11 +96,16 @@ class APIController extends Controller {
 		/** @var IDetail $detail */
 		foreach ($section->getDetails() as $detail) {
 			$model[$section->getIdentifier()][$detail->getIdentifier()] = $detail->getInformation();
-			$group['fields'][] = [
-				'type' => $this->getTypeFieldSchema($detail->getType()),
+			$type = $this->getTypeFieldSchema($detail->getType());
+			$field = [
+				'type' => $type,
 				'label' => $detail->getTitle(),
 				'model' => $section->getIdentifier() . '.' . $detail->getIdentifier()
 			];
+			if ($type === 'input') {
+				$field['inputType'] = 'text';
+			}
+			$group['fields'][] = $field;
 		}
 		$schema['groups'][] = $group;
 

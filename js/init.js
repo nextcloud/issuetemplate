@@ -95,7 +95,7 @@ new Vue({
 			var self = this;
 			self.tabs = [];
 			$.ajax({
-				url: OC.generateUrl('/apps/issuetemplate/sections/' + this.app),
+				url: OC.generateUrl('/apps/issuetemplate/sections/' + this.getAppId()),
 				method: 'GET',
 				success: function (data) {
 					self.tabs = data;
