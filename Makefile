@@ -50,6 +50,8 @@ composer=$(shell which composer 2> /dev/null)
 
 all: build
 
+clean-build: distclean build
+
 # Fetches the PHP and JS dependencies and compiles the JS. If no composer.json
 # is present, the composer step is skipped, if no package.json or js/package.json
 # is present, the npm step is skipped
@@ -87,6 +89,7 @@ npm:
 ifeq (,$(wildcard $(CURDIR)/package.json))
 	cd js && $(npm) run build
 else
+	npm install
 	npm run build
 endif
 
@@ -156,13 +159,7 @@ appstore:
 # and root directory. If phpunit is not installed systemwide, a copy is fetched
 # from the internet
 .PHONY: test
-test:
-ifneq (,$(wildcard $(CURDIR)/js/package.json))
-	cd js && $(npm) run test
-endif
-ifneq (,$(wildcard $(CURDIR)/package.json))
-	$(npm) run test
-endif
+test: composer 
 ifeq (, $(shell which phpunit 2> /dev/null))
 	@echo "No phpunit command available, downloading a copy from the web"
 	mkdir -p $(build_tools_directory)

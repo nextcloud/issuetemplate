@@ -23,7 +23,7 @@
 
 namespace OCA\IssueTemplate;
 
-class Section implements ISection {
+class Section implements ISection, \JsonSerializable {
 
 	/** @var string */
 	private $identifier;
@@ -77,4 +77,10 @@ class Section implements ISection {
 		return $detail;
 	}
 
+	public function jsonSerialize() {
+		return [
+			'identifier' => $this->getIdentifier(),
+			'title' => $this->getTitle(),
+		];
+	}
 }

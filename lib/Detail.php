@@ -23,15 +23,22 @@
 
 namespace OCA\IssueTemplate;
 
+use OCP\IRequest;
+
 class Detail implements IDetail {
 
 	private $section;
+	private $identifier;
 	private $title;
 	private $information;
 	private $type;
 
-	public function __construct($section, $title, $information, $type) {
+	public function __construct($section, $title, $information, $type, $identifier = '') {
 		$this->section = $section;
+		$this->identifier = $identifier;
+		if ($identifier === '') {
+			$this->identifier = md5($title);
+		}
 		$this->title = $title;
 		$this->information = $information;
 		$this->type = $type;
@@ -46,10 +53,19 @@ class Detail implements IDetail {
 	}
 
 	public function getInformation() {
+		/** @var IRequest $request */
+		$request = \OC::$server->query(IRequest::class);
+		if ($request->getParam('details')) {
+			return $request->getParam('details')[$this->getSection()][$this->getIdentifier()];
+		}
 		return $this->information;
 	}
 
 	public function getSection() {
 		return $this->section;
+	}
+
+	public function getIdentifier() {
+		return $this->identifier;
 	}
 }

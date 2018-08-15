@@ -31,22 +31,31 @@ namespace OCA\IssueTemplate;
 interface ISection {
 
 	/**
+	 * Returns a unique identifier for the section
+	 *
+	 * Predefined sections are server, client and log
 	 * @return string
 	 */
 	public function getIdentifier();
 
 	/**
+	 * Returns a human readable title for the section
+	 *
 	 * @return string
 	 */
 	public function getTitle();
 
 	/**
+	 * Adds a detail entry to a section
+	 *
 	 * @param IDetail $details
 	 * @return void
 	 */
 	public function addDetail(IDetail $details);
 
 	/**
+	 * Get all details contained in the section
+	 *
 	 * @return IDetail[]
 	 */
 	public function getDetails();

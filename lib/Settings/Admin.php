@@ -42,72 +42,25 @@ class Admin implements ISettings {
 	private $config;
 	/** @var IL10N */
 	private $l10n;
-	/** @var IAppManager */
-	private $appManager;
-	/** @var DetailManager */
-	private $detailManager;
-	/** @var ServerSection */
-	private $serverSection;
-	/** @var ClientSection  */
-	private $clientSection;
-	/** @var LogSection */
-	private $logSection;
-	/** @var EventDispatcher */
-	private $eventDispatcher;
 	/** @var IRequest */
 	private $request;
 
 	public function __construct(
 		IConfig $config,
 		IL10N $l10n,
-		IAppManager $appManager,
-		EventDispatcher $eventDispatcher,
-		DetailManager $detailManager,
-		ServerSection $serverSection,
-		ClientSection $clientSection,
 		LogSection $logSection,
 		IRequest $request
 	) {
 		$this->config = $config;
 		$this->l10n = $l10n;
-		$this->appManager = $appManager;
-		$this->detailManager = $detailManager;
-		$this->serverSection = $serverSection;
-		$this->clientSection = $clientSection;
-		$this->logSection = $logSection;
-		$this->eventDispatcher = $eventDispatcher;
+
 		$this->request = $request;
-
-		// Register core details that are used in every report
-		$this->detailManager->addSection($this->serverSection);
-		$this->detailManager->addSection($this->clientSection);
-		$this->detailManager->addSection($this->logSection);
-
-	}
-
-	public function queryAppDetails($app) {
-		$event = new GenericEvent($this->detailManager, [$app]);
-		$this->eventDispatcher->dispatch('\OCA\IssueTemplate::requestInformation', $event);
 	}
 
 	public function getForm() {
-
-		$app = $this->request->getParam('app');
-		$this->queryAppDetails($app);
-
-		$data = array(
-			'details' => $this->detailManager->getRenderedDetails()
-		);
-
-		$issueTemplate = new TemplateResponse('issuetemplate', 'issuetemplate', $data, '');
-		$parameters = [
-			'issueTemplate' => $issueTemplate->render(),
-			'repos' => $this->getAppRepos(),
-			'app' => $app
-		];
-		\OC_Util::addScript('issuetemplate','script');
+		\OC_Util::addScript('issuetemplate','build/build');
 		\OC_Util::addStyle('issuetemplate','style');
-		return new TemplateResponse('issuetemplate', 'settings-admin', $parameters, '');
+		return new TemplateResponse('issuetemplate', 'settings-admin', [], '');
 	}
 
 	public function getSection() {
@@ -116,43 +69,6 @@ class Admin implements ISettings {
 
 	public function getPriority() {
 		return 10;
-	}
-
-	public function getAppRepos() {
-		$apps = \OC_App::getAllApps();
-		$repos = array(
-			'core' => [
-				'name' => $this->l10n->t('Nextcloud server repository'),
-				'bugs' => 'https://github.com/nextcloud/server/issues'
-			],
-			'android' => [
-				'name' => $this->l10n->t('Nextcloud Android app repository'),
-				'bugs' => 'https://github.com/nextcloud/android/issues'
-			],
-			'ios' => [
-				'name' => $this->l10n->t('Nextcloud iOS app repository'),
-				'bugs' => 'https://github.com/nextcloud/ios/issues'
-			]
-		);
-		foreach ($apps as $app) {
-			if ($this->appManager->isInstalled($app)) {
-				$appinfo = \OC_App::getAppInfo($app);
-				if (array_key_exists('name', $appinfo)
-					&& array_key_exists('bugs', $appinfo)
-					&& preg_match("/https:\/\/(www.)?github.com\/(.*)\/issues/i", $appinfo['bugs'])) {
-					$appId = $appinfo['id'];
-					if(is_array($appinfo['name'])) {
-						$appTitle = $appinfo['name'][0];
-					} else {
-						$appTitle = $appinfo['name'];
-					}
-					$repos[$appId] = $appinfo;
-					$repos[$appId]['name'] = $appTitle;
-				}
-
-			}
-		}
-		return $repos;
 	}
 
 }
