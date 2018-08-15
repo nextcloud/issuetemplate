@@ -159,7 +159,7 @@ appstore:
 # and root directory. If phpunit is not installed systemwide, a copy is fetched
 # from the internet
 .PHONY: test
-test:
+test: build
 ifeq (, $(shell which phpunit 2> /dev/null))
 	@echo "No phpunit command available, downloading a copy from the web"
 	mkdir -p $(build_tools_directory)
