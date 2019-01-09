@@ -81,7 +81,7 @@ class ComponentService {
 						try {
 							$icon = $this->urlGenerator->imagePath($appId, $appId . '.svg');
 						} catch (\RuntimeException $ex) {
-							$icon = $this->urlGenerator->imagePath('core', 'logo.svg');
+							$icon = $this->urlGenerator->imagePath('core', 'logo/logo.svg');
 						}
 					}
 					$appComponents[$appId]['icon'] = $icon;
@@ -105,7 +105,7 @@ class ComponentService {
 
 	public function getComponent($id, $title, $repo, $logo = '') {
 		if ($logo === '') {
-			$logo = \OC::$server->getURLGenerator()->imagePath('core','logo.svg');
+			$logo = \OC::$server->getURLGenerator()->imagePath('core','logo/logo.svg');
 		}
 		return [
 			'name' => $title,
