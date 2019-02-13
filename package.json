@@ -24,7 +24,7 @@
   "homepage": "https://github.com/juliushaertl/issuetemplate#readme",
   "dependencies": {
     "vue": "^2.6.6",
-    "vue-clipboard2": "0.0.8",
+    "vue-clipboard2": "0.3.0",
     "vue-form-generator": "^2.3.4",
     "vue-form-wizard": "^0.8.4"
   },
