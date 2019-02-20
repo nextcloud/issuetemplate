@@ -23,7 +23,6 @@
 
 namespace OCA\IssueTemplate\Sections;
 
-
 use OCA\IssueTemplate\IDetail;
 use OCA\IssueTemplate\Section;
 
@@ -31,7 +30,7 @@ class LogSection extends Section {
 
 	public function __construct() {
 		parent::__construct('log-detail', 'Logs');
-		$this->createDetail('Browser log', 'Insert your webserver log here ', IDetail::TYPE_COLLAPSIBLE_PREFORMAT);
+		$this->createDetail('Web server error log', 'Insert your web server log here ', IDetail::TYPE_COLLAPSIBLE_PREFORMAT);
 		$this->createDetail('Nextcloud log', 'Insert your Nextcloud log here', IDetail::TYPE_COLLAPSIBLE_PREFORMAT);
 		$this->createDetail('Browser log', 'Insert your browser log here, this could for example include:
 
