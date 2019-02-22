@@ -23,7 +23,7 @@
   },
   "homepage": "https://github.com/juliushaertl/issuetemplate#readme",
   "dependencies": {
-    "vue": "^2.6.6",
+    "vue": "^2.6.7",
     "vue-clipboard2": "0.3.0",
     "vue-form-generator": "^2.3.4",
     "vue-form-wizard": "^0.8.4"
@@ -38,7 +38,7 @@
     "file-loader": "^1.1.11",
     "vue-hot-reload-api": "^2.3.2",
     "vue-loader": "^13.7.3",
-    "vue-template-compiler": "^2.6.6",
+    "vue-template-compiler": "^2.6.7",
     "webpack": "^3.12.0",
     "webpack-dev-server": "^2.11.3"
   }
