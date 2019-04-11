@@ -36,7 +36,7 @@
     "cross-env": "^5.2.0",
     "css-loader": "^2.1.1",
     "file-loader": "^2.0.0",
-    "vue-hot-reload-api": "^2.3.2",
+    "vue-hot-reload-api": "^2.3.3",
     "vue-loader": "^15.4.2",
     "vue-template-compiler": "^2.6.10",
     "webpack": "^3.12.0",
