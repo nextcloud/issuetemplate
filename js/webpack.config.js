@@ -30,6 +30,7 @@ module.exports = {
 		]
 	},
 	plugins: [
+		new VueLoaderPlugin()
 	],
 	resolve: {
 		alias: {
