@@ -1,157 +1,124 @@
-clone:
-  git:
-    image: plugins/git
-    depth: 1
-
-pipeline:
-  check-app-compatbility:
-    image: nextcloudci/php7.0:php7.0-19
-    environment:
-      - APP_NAME=issuetemplate
-      - CORE_BRANCH=stable13
-      - DB=sqlite
-    commands:
-      # Pre-setup steps
-      - wget https://raw.githubusercontent.com/nextcloud/travis_ci/master/before_install.sh
-      - bash ./before_install.sh $APP_NAME $CORE_BRANCH $DB
-      - cd ../server
-      # Code checker
-      - ./occ app:check-code $APP_NAME -c strong-comparison
-      - ./occ app:check-code $APP_NAME -c deprecation
-      - cd apps/$APP_NAME/
-    when:
-      matrix:
-        TESTS: check-app-compatbility
-  signed-off-check:
-    image: nextcloudci/php7.0:php7.0-19
-    environment:
-      - APP_NAME=issuetemplate
-      - CORE_BRANCH=stable13
-      - DB=sqlite
-    commands:
-      - wget https://raw.githubusercontent.com/nextcloud/travis_ci/master/before_install.sh
-      - bash ./before_install.sh $APP_NAME $CORE_BRANCH $DB
-      - cd ../server
-      - php ./build/signed-off-checker.php
-    secrets: [ github_token ]
-    when:
-      matrix:
-        TESTS: signed-off-check
-  syntax-php5.6:
-    image: nextcloudci/php5.6:php5.6-8
-    environment:
-      - APP_NAME=issuetemplate
-      - CORE_BRANCH=stable13
-      - DB=sqlite
-    commands:
-      # Pre-setup steps
-      - wget https://raw.githubusercontent.com/nextcloud/travis_ci/master/before_install.sh
-      - bash ./before_install.sh $APP_NAME $CORE_BRANCH $DB
-      - cd ../server
-      - composer install
-      - ./lib/composer/bin/parallel-lint --exclude build/.phan/ --exclude lib/composer/jakub-onderka/ --exclude 3rdparty/symfony/polyfill-php70/Resources/stubs/ --exclude 3rdparty/patchwork/utf8/src/Patchwork/Utf8/Bootup/ --exclude 3rdparty/paragonie/random_compat/lib/ --exclude lib/composer/composer/autoload_static.php --exclude 3rdparty/composer/autoload_static.php .
-    when:
-      matrix:
-        TESTS: syntax-php5.6
-  syntax-php7.0:
-    image: nextcloudci/php7.0:php7.0-19
-    environment:
-      - APP_NAME=issuetemplate
-      - CORE_BRANCH=stable13
-      - DB=sqlite
-    commands:
-      # Pre-setup steps
-      - wget https://raw.githubusercontent.com/nextcloud/travis_ci/master/before_install.sh
-      - bash ./before_install.sh $APP_NAME $CORE_BRANCH $DB
-      - cd ../server
-      - composer install
-      - ./lib/composer/bin/parallel-lint --exclude lib/composer/jakub-onderka/ --exclude 3rdparty/symfony/polyfill-php70/Resources/stubs/ --exclude 3rdparty/patchwork/utf8/src/Patchwork/Utf8/Bootup/ --exclude 3rdparty/paragonie/random_compat/lib/ --exclude lib/composer/composer/autoload_static.php --exclude 3rdparty/composer/autoload_static.php .
-    when:
-      matrix:
-        TESTS: syntax-php7.0
-  php5.6:
-    image: nextcloudci/php5.6:php5.6-8
-    environment:
-      - APP_NAME=issuetemplate
-      - CORE_BRANCH=stable13
-      - DB=sqlite
-    commands:
-      # Pre-setup steps
-      - wget https://raw.githubusercontent.com/nextcloud/travis_ci/master/before_install.sh
-      - bash ./before_install.sh $APP_NAME $CORE_BRANCH $DB
-      - cd ../server/
-      - ./occ app:enable $APP_NAME
-      - cd apps/$APP_NAME
-      - make test
-
-      # Create coverage report
-      - wget https://codecov.io/bash -O codecov.sh
-      - sh -c "if [ '$DRONE_BUILD_EVENT' = 'pull_request' ]; then bash codecov.sh -B $DRONE_BRANCH -C $DRONE_COMMIT -P $DRONE_PULL_REQUEST; fi"
-      - sh -c "if [ '$DRONE_BUILD_EVENT' != 'pull_request' ]; then bash codecov.sh -B $DRONE_BRANCH -C $DRONE_COMMIT; fi"
-    when:
-      matrix:
-        TESTS: php5.6
-  php7.0:
-    image: nextcloudci/php7.0:php7.0-17
-    environment:
-      - APP_NAME=issuetemplate
-      - CORE_BRANCH=stable13
-      - DB=sqlite
-    commands:
-      # Pre-setup steps
-      - wget https://raw.githubusercontent.com/nextcloud/travis_ci/master/before_install.sh
-      - bash ./before_install.sh $APP_NAME $CORE_BRANCH $DB
-      - cd ../server/
-      - php occ app:enable issuetemplate
-      - cd apps/$APP_NAME
-      # Run phpunit tests
-      - make test
-    when:
-      matrix:
-        TESTS: php7.0
-  php7.1:
-    image: nextcloudci/php7.1:php7.1-15
-    environment:
-      - APP_NAME=issuetemplate
-      - CORE_BRANCH=stable13
-      - DB=sqlite
-    commands:
-      # Pre-setup steps
-      - wget https://raw.githubusercontent.com/nextcloud/travis_ci/master/before_install.sh
-      - bash ./before_install.sh $APP_NAME $CORE_BRANCH $DB
-      - cd ../server/
-      - php occ app:enable issuetemplate
-      - cd apps/$APP_NAME
-      - make test 
-    when:
-      matrix:
-        TESTS: php7.1
-  php7.2:
-    image: nextcloudci/php7.2:php7.2-9
-    environment:
-      - APP_NAME=issuetemplate
-      - CORE_BRANCH=stable13
-      - DB=sqlite
-    commands:
-      # Pre-setup steps
-      - wget https://raw.githubusercontent.com/nextcloud/travis_ci/master/before_install.sh
-      - bash ./before_install.sh $APP_NAME $CORE_BRANCH $DB
-      - cd ../server/
-      - php occ app:enable issuetemplate
-      - cd apps/$APP_NAME
-      - make test 
-    when:
-      matrix:
-        TESTS: php7.2
-matrix:
-  include:
-    - TESTS: check-app-compatbility
-    - TESTS: signed-off-check
-    - TESTS: syntax-php5.6
-    - TESTS: syntax-php7.0
-    - TESTS: php5.6
-    - TESTS: php7.0
-    - TESTS: php7.1
-    - TESTS: php7.2
-
-branches: [ master, stable* ]
+---
+kind: pipeline
+name: compatibility
+steps:
+- name: check-app-compatbility
+  pull: default
+  image: nextcloudci/php7.0:php7.0-19
+  commands:
+  - wget https://raw.githubusercontent.com/nextcloud/travis_ci/master/before_install.sh
+  - bash ./before_install.sh $APP_NAME $CORE_BRANCH $DB
+  - cd ../server
+  - ./occ app:check-code $APP_NAME -c strong-comparison
+  - ./occ app:check-code $APP_NAME -c deprecation
+  - cd apps/$APP_NAME/
+  environment:
+    APP_NAME: issuetemplate
+    CORE_BRANCH: stable15
+    DB: sqlite
+trigger:
+  branch:
+    - master
+    - stable*
+  event:
+    - pull_request
+    - push
+---
+kind: pipeline
+name: syntax-php7.0
+steps:
+- name: syntax-php7.0
+  pull: default
+  image: nextcloudci/php7.0:php7.0-19
+  commands:
+  - wget https://raw.githubusercontent.com/nextcloud/travis_ci/master/before_install.sh
+  - bash ./before_install.sh $APP_NAME $CORE_BRANCH $DB
+  - cd ../server
+  - composer install
+  - ./lib/composer/bin/parallel-lint --exclude lib/composer/jakub-onderka/ --exclude 3rdparty/symfony/polyfill-php70/Resources/stubs/ --exclude 3rdparty/patchwork/utf8/src/Patchwork/Utf8/Bootup/ --exclude 3rdparty/paragonie/random_compat/lib/ --exclude lib/composer/composer/autoload_static.php --exclude 3rdparty/composer/autoload_static.php .
+  environment:
+    APP_NAME: issuetemplate
+    CORE_BRANCH: stable15
+    DB: sqlite
+trigger:
+  branch:
+    - master
+    - stable*
+  event:
+    - pull_request
+    - push
+---
+kind: pipeline
+name: php7.0
+steps:
+- name: php7.0
+  pull: default
+  image: nextcloudci/php7.0:php7.0-17
+  commands:
+  - wget https://raw.githubusercontent.com/nextcloud/travis_ci/master/before_install.sh
+  - bash ./before_install.sh $APP_NAME $CORE_BRANCH $DB
+  - cd ../server/
+  - php occ app:enable issuetemplate
+  - cd apps/$APP_NAME
+  - make test
+  environment:
+    APP_NAME: issuetemplate
+    CORE_BRANCH: stable15
+    DB: sqlite
+trigger:
+  branch:
+    - master
+    - stable*
+  event:
+    - pull_request
+    - push
+---
+kind: pipeline
+name: php7.1
+steps:
+- name: php7.1
+  pull: default
+  image: nextcloudci/php7.1:php7.1-15
+  commands:
+  - wget https://raw.githubusercontent.com/nextcloud/travis_ci/master/before_install.sh
+  - bash ./before_install.sh $APP_NAME $CORE_BRANCH $DB
+  - cd ../server/
+  - php occ app:enable issuetemplate
+  - cd apps/$APP_NAME
+  - make test
+  environment:
+    APP_NAME: issuetemplate
+    CORE_BRANCH: stable15
+    DB: sqlite
+trigger:
+  branch:
+    - master
+    - stable*
+  event:
+    - pull_request
+    - push
+---
+kind: pipeline
+name: php7.2
+steps:
+- name: php7.2
+  pull: default
+  image: nextcloudci/php7.2:php7.2-9
+  commands:
+  - wget https://raw.githubusercontent.com/nextcloud/travis_ci/master/before_install.sh
+  - bash ./before_install.sh $APP_NAME $CORE_BRANCH $DB
+  - cd ../server/
+  - php occ app:enable issuetemplate
+  - cd apps/$APP_NAME
+  - make test
+  environment:
+    APP_NAME: issuetemplate
+    CORE_BRANCH: stable15
+    DB: sqlite
+trigger:
+  branch:
+    - master
+    - stable*
+  event:
+    - pull_request
+    - push
