@@ -122,3 +122,23 @@ trigger:
   event:
     - pull_request
     - push
+
+---
+kind: pipeline
+name: frontend
+steps:
+  - name: npm install
+    image: nextcloudci/node:node-4
+    commands:
+      - npm install
+  - name: npm build
+    image: nextcloudci/node:node-4
+    commands:
+      - npm run build
+trigger:
+  branch:
+    - master
+    - stable*
+  event:
+    - pull_request
+    - push
