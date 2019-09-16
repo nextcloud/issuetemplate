@@ -39,7 +39,7 @@
     "vue-hot-reload-api": "^2.3.4",
     "vue-loader": "^15.7.1",
     "vue-template-compiler": "^2.6.10",
-    "webpack": "^4.40.0",
+    "webpack": "^4.40.2",
     "webpack-dev-server": "^3.8.0"
   }
 }
