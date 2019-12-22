@@ -1,3 +1,7 @@
+## 0.6.0
+
+- Add compatbility for Nextcloud 17, 18
+
 ## 0.4.0
 ### Added
 - New wizard UI to prepare bug reports
