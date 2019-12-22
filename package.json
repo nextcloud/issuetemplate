@@ -34,7 +34,7 @@
     "@babel/preset-env": "^7.7.6",
     "babel-loader": "^8.0.6",
     "cross-env": "^6.0.3",
-    "css-loader": "^3.3.2",
+    "css-loader": "^3.4.0",
     "file-loader": "^5.0.2",
     "vue-hot-reload-api": "^2.3.4",
     "vue-loader": "^15.8.3",
