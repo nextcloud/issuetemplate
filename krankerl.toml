@@ -1,26 +1,4 @@
 [package]
-exclude = [
-    "build/",
-    ".git",
-    "node_modules",
-    "package.json",
-    "package-lock.json",
-    "tests",
-    ".codecov.yml",
-    "composer.json",
-    "composer.lock",
-    "_config.yml",
-    ".drone.yml",
-    ".travis.yml",
-    ".eslintignore",
-    ".eslintrc.yml",
-    ".gitignore",
-    "issue_template.md",
-    "krankerl.toml",
-    "Makefile",
-    "run-eslint.sh"
-]
-
 before_cmds = [
     'make clean-build',
     'make build'
