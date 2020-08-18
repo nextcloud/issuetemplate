@@ -1,3 +1,8 @@
+## 0.7.0
+
+- Add compatibility for Nextcloud 19, 20
+- Bump dependencies
+
 ## 0.6.0
 
 - Add compatbility for Nextcloud 17, 18
