@@ -21,45 +21,50 @@
   -->
 <template>
 	<div id="app-selector">
-		<div v-for="item in apps">
-		<h3>{{ item.title }}</h3>
+		<div v-for="item in apps" :key="item.id">
+			<h3>{{ item.title }}</h3>
 
-		<div class="affected-components">
-			<div class="affected-component" v-for="component in item.items" v-on:click="selectComponent(component)">
-				<div class="logo"><img :src="component.icon" /></div>
-				<p>{{ component.name }}</p>
+			<div class="affected-components">
+				<div v-for="component in item.items"
+					:key="component.id"
+					class="affected-component"
+					@click="selectComponent(component)">
+					<div class="logo">
+						<img :src="component.icon">
+					</div>
+					<p>{{ component.name }}</p>
+				</div>
 			</div>
-		</div>
 		</div>
 	</div>
 </template>
 
 <script>
-	export default {
-		methods: {
-			selectComponent: function(component) {
-				this.$emit('select', component);
-			}
-		},
-		mounted: function () {
-			let self = this;
-			$.ajax({
-				url: OC.generateUrl('/apps/issuetemplate/components'),
-				method: 'GET',
-				success: function (data) {
-					self.apps = data;
-				},
-				error: function (error) {
-					console.log(error);
-					self.apps = [];
-				}
-			});
-		},
-		data: function () {
-			return {
-				apps: {},
-				selected: this.selected,
-			}
+import axios from '@nextcloud/axios'
+import { generateUrl } from '@nextcloud/router'
+
+export default {
+	name: 'AppSelector',
+	data() {
+		return {
+			apps: {},
+			selected: this.selected,
 		}
-	}
+	},
+	async mounted() {
+		try {
+			const response = await axios.get(generateUrl('/apps/issuetemplate/components'))
+			console.debug(response)
+			this.apps = response.data
+		} catch (e) {
+			console.error(e)
+			this.apps = []
+		}
+	},
+	methods: {
+		selectComponent(component) {
+			this.$emit('select', component)
+		},
+	},
+}
 </script>

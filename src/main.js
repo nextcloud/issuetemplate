@@ -20,21 +20,21 @@
  *
  */
 
-import Vue from 'vue';
-import VueFormWizard from 'vue-form-wizard';
-import VueFormGenerator from 'vue-form-generator';
-import VueClipboard from 'vue-clipboard2';
+import Vue from 'vue'
+import VueFormWizard from 'vue-form-wizard'
+import VueFormGenerator from 'vue-form-generator'
+import VueClipboard from 'vue-clipboard2'
 import App from './App.vue'
 
+// eslint-disable-next-line
+__webpack_nonce__ = btoa(OC.requestToken)
 
-/* global __webpack_nonce__ OC */
-__webpack_nonce__ = btoa(OC.requestToken); // eslint-disable-line no-native-reassign
 Vue.prototype.t = t
 Vue.prototype.OCA = OCA
 
-Vue.use(VueFormWizard);
-Vue.use(VueFormGenerator);
-Vue.use(VueClipboard);
+Vue.use(VueFormWizard)
+Vue.use(VueFormGenerator)
+Vue.use(VueClipboard)
 
 new Vue({
 	render: h => h(App),
