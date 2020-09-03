@@ -1,45 +1,61 @@
 {
-  "name": "issuetemplate",
-  "version": "0.4.0",
-  "description": "Issue reporting app for Nextcloud",
-  "main": "index.js",
-  "directories": {
-    "lib": "lib",
-    "test": "tests"
-  },
-  "scripts": {
-    "dev": "cross-env NODE_ENV=development webpack --progress --hot --config js/webpack.config.js --watch",
-    "build": "cross-env NODE_ENV=production webpack --progress --hide-modules --config js/webpack.config.js",
-    "test": "echo \"Error: no test specified\" && exit 0"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/juliushaertl/issuetemplate.git"
-  },
-  "author": "Julius Härtl",
-  "license": "AGPL-3.0",
-  "bugs": {
-    "url": "https://github.com/juliushaertl/issuetemplate/issues"
-  },
-  "homepage": "https://github.com/juliushaertl/issuetemplate#readme",
-  "dependencies": {
-    "vue": "^2.6.12",
-    "vue-clipboard2": "0.3.1",
-    "vue-form-generator": "^2.3.4",
-    "vue-form-wizard": "^0.8.4"
-  },
-  "devDependencies": {
-    "@babel/core": "^7.11.4",
-    "@babel/plugin-syntax-dynamic-import": "^7.8.3",
-    "@babel/preset-env": "^7.11.0",
-    "babel-loader": "^8.1.0",
-    "cross-env": "^7.0.2",
-    "css-loader": "^4.2.1",
-    "file-loader": "^6.0.0",
-    "vue-hot-reload-api": "^2.3.4",
-    "vue-loader": "^15.9.3",
-    "vue-template-compiler": "^2.6.12",
-    "webpack": "^4.44.1",
-    "webpack-dev-server": "^3.11.0"
-  }
+	"name": "issuetemplate",
+	"version": "0.4.0",
+	"description": "Issue reporting app for Nextcloud",
+	"main": "index.js",
+	"directories": {
+		"lib": "lib",
+		"test": "tests"
+	},
+	"scripts": {
+		"build": "NODE_ENV=production webpack --progress --hide-modules --config webpack.js",
+		"dev": "NODE_ENV=development webpack --progress --config webpack.js",
+		"watch": "NODE_ENV=development webpack --progress --watch --config webpack.js",
+		"lint": "eslint --ext .js,.vue src",
+		"lint:fix": "eslint --ext .js,.vue src --fix",
+		"stylelint": "stylelint src",
+		"stylelint:fix": "stylelint src --fix",
+		"test": "jest",
+		"test:coverage": "jest --coverage"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/juliushaertl/issuetemplate.git"
+	},
+	"author": "Julius Härtl",
+	"license": "AGPL-3.0",
+	"bugs": {
+		"url": "https://github.com/juliushaertl/issuetemplate/issues"
+	},
+	"homepage": "https://github.com/juliushaertl/issuetemplate#readme",
+	"dependencies": {
+		"vue": "^2.6.12",
+		"vue-clipboard2": "0.3.1",
+		"vue-form-generator": "^2.3.4",
+		"vue-form-wizard": "^0.8.4"
+	},
+	"devDependencies": {
+		"@babel/core": "^7.11.4",
+		"@babel/plugin-syntax-dynamic-import": "^7.8.3",
+		"@babel/preset-env": "^7.11.0",
+		"@nextcloud/webpack-vue-config": "^1.4.0",
+		"babel-loader": "^8.1.0",
+		"cross-env": "^7.0.2",
+		"css-loader": "^4.2.2",
+		"eslint": "^6.8.0",
+		"eslint-loader": "^4.0.2",
+		"file-loader": "^6.0.0",
+		"node-sass": "^4.14.1",
+		"sass-loader": "^8.0.2",
+		"style-loader": "^1.2.1",
+		"stylelint": "^13.7.0",
+		"stylelint-webpack-plugin": "^2.1.0",
+		"url-loader": "^4.1.0",
+		"vue-hot-reload-api": "^2.3.4",
+		"vue-loader": "^15.9.3",
+		"vue-template-compiler": "^2.6.12",
+		"webpack": "^4.44.1",
+		"webpack-cli": "^3.3.12",
+		"webpack-dev-server": "^3.11.0"
+	}
 }
