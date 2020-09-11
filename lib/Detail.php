@@ -55,8 +55,9 @@ class Detail implements IDetail {
 	public function getInformation() {
 		/** @var IRequest $request */
 		$request = \OC::$server->query(IRequest::class);
-		if ($request->getParam('details')) {
-			return $request->getParam('details')[$this->getSection()][$this->getIdentifier()];
+		$request = $request->getParam('details');
+		if ($request && isset($request[$this->getSection()][$this->getIdentifier()])) {
+			return $request[$this->getSection()][$this->getIdentifier()];
 		}
 		return $this->information;
 	}
