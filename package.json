@@ -45,7 +45,7 @@
 		"@babel/preset-env": "^7.15.8",
 		"@nextcloud/browserslist-config": "^2.2.0",
 		"@nextcloud/webpack-vue-config": "^1.4.1",
-		"babel-loader": "^8.2.2",
+		"babel-loader": "^8.2.3",
 		"cross-env": "^7.0.3",
 		"css-loader": "^4.3.0",
 		"eslint": "^6.8.0",
