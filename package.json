@@ -34,7 +34,7 @@
 	"dependencies": {
 		"@nextcloud/axios": "^1.8.0",
 		"@nextcloud/router": "^2.0.0",
-		"vue": "^2.6.14",
+		"vue": "^3.2.36",
 		"vue-clipboard2": "0.3.3",
 		"vue-form-generator": "^2.3.4",
 		"vue-form-wizard": "^0.8.4"
