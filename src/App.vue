@@ -210,3 +210,6 @@ export default {
 	},
 }
 </script>
+<style lang="scss">
+@import './css/style.scss';
+</style>

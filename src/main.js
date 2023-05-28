@@ -24,10 +24,14 @@ import Vue from 'vue'
 import VueFormWizard from 'vue-form-wizard'
 import VueFormGenerator from 'vue-form-generator'
 import VueClipboard from 'vue-clipboard2'
+import { generateFilePath } from '@nextcloud/router'
 import App from './App.vue'
 
 // eslint-disable-next-line
 __webpack_nonce__ = btoa(OC.requestToken)
+
+// eslint-disable-next-line
+__webpack_public_path__ = generateFilePath('issuetemplate', '', 'js/')
 
 Vue.prototype.t = t
 Vue.prototype.OCA = OCA

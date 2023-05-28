@@ -9,7 +9,7 @@
     <namespace>IssueTemplate</namespace>
     <category>tools</category>
     <dependencies>
-        <nextcloud min-version="15" max-version="20" />
+        <nextcloud min-version="24" max-version="28" />
     </dependencies>
     <settings>
         <admin-section>OCA\IssueTemplate\Settings\Section</admin-section>

@@ -42,7 +42,7 @@ fieldset legend {
 	}
 }
 .stepTitle {
-	color: $color-main-text;
+	color: var(--color-main-text);
 }
 
 .affected-components {
