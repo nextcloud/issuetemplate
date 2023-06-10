@@ -34,7 +34,7 @@
     "@nextcloud/axios": "^2.3.0",
     "@nextcloud/dialogs": "^4.0.1",
     "@nextcloud/router": "^2.1.1",
-    "@nextcloud/vue": "^7.4.0",
+    "@nextcloud/vue": "^7.12.0",
     "vue": "^2.7.14",
     "vue-clipboard2": "0.3.3",
     "vue-form-generator": "^2.3.4",
