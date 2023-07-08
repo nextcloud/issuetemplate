@@ -31,7 +31,7 @@
   },
   "homepage": "https://github.com/juliushaertl/issuetemplate#readme",
   "dependencies": {
-    "@nextcloud/axios": "^2.3.0",
+    "@nextcloud/axios": "^2.4.0",
     "@nextcloud/dialogs": "^4.1.0",
     "@nextcloud/router": "^2.1.2",
     "@nextcloud/vue": "^7.12.0",
